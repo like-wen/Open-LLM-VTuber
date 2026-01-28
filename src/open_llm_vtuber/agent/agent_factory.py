@@ -23,16 +23,16 @@ class AgentFactory:
         tts_preprocessor_config=None,
         **kwargs,
     ) -> Type[AgentInterface]:
-        """Create an agent based on the configuration.
+        """根据配置创建一个代理。
 
-        Args:
-            conversation_agent_choice: The type of agent to create
-            agent_settings: Settings for different types of agents
-            llm_configs: Pool of LLM configurations
-            system_prompt: The system prompt to use
-            live2d_model: Live2D model instance for expression extraction
-            tts_preprocessor_config: Configuration for TTS preprocessing
-            **kwargs: Additional arguments
+        参数:
+            conversation_agent_choice: 要创建的代理类型
+            agent_settings: 不同类型代理的设置
+            llm_configs: LLM 配置池
+            system_prompt: 要使用的系统提示
+            live2d_model: 用于表情提取的 Live2D 模型实例
+            tts_preprocessor_config: TTS 预处理配置
+            **kwargs: 额外参数
         """
         logger.info(f"Initializing agent: {conversation_agent_choice}")
 

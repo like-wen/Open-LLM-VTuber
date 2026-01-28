@@ -104,15 +104,18 @@ class StateMachine:
 
     @classmethod
     def calculate_db(cls, audio_data: np.ndarray) -> float:
+        """计算音频数据的分贝值"""
         rms = np.sqrt(np.mean(np.square(audio_data)))
         return 20 * np.log10(rms + 1e-7) if rms > 0 else -np.inf
 
     def update(self, chunk_bytes, prob, db):
+        """更新状态机中的概率、分贝和字节数据"""
         self.probs.append(prob)
         self.dbs.append(db)
         self.bytes.extend(chunk_bytes)
 
     def reset_buffers(self):
+        """重置状态机中的所有缓冲区"""
         self.probs.clear()
         self.dbs.clear()
         self.bytes.clear()

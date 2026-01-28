@@ -14,7 +14,7 @@ from .types import WebSocketSend
 
 
 class TTSTaskManager:
-    """Manages TTS tasks and ensures ordered delivery to frontend while allowing parallel TTS generation"""
+    """管理TTS任务并确保有序传递到前端，同时允许并行TTS生成"""
 
     def __init__(self) -> None:
         self.task_list: List[asyncio.Task] = []
@@ -37,15 +37,15 @@ class TTSTaskManager:
         websocket_send: WebSocketSend,
     ) -> None:
         """
-        Queue a TTS task while maintaining order of delivery.
+        排队TTS任务同时保持传递顺序。
 
-        Args:
-            tts_text: Text to synthesize
-            display_text: Text to display in UI
-            actions: Live2D model actions
-            live2d_model: Live2D model instance
-            tts_engine: TTS engine instance
-            websocket_send: WebSocket send function
+        参数:
+            tts_text: 要合成的文本
+            display_text: 在UI中显示的文本
+            actions: Live2D模型动作
+            live2d_model: Live2D模型实例
+            tts_engine: TTS引擎实例
+            websocket_send: WebSocket发送函数
         """
         if len(re.sub(r'[\s.,!?，。！？\'"』」）】\s]+', "", tts_text)) == 0:
             logger.debug("Empty TTS text, sending silent display payload")
@@ -91,8 +91,8 @@ class TTSTaskManager:
 
     async def _process_payload_queue(self, websocket_send: WebSocketSend) -> None:
         """
-        Process and send payloads in correct order.
-        Runs continuously until all payloads are processed.
+        按正确顺序处理和发送payloads。
+        持续运行直到所有payloads都被处理。
         """
         buffered_payloads: Dict[int, Dict] = {}
 
@@ -119,7 +119,7 @@ class TTSTaskManager:
         actions: Optional[Actions],
         sequence_number: int,
     ) -> None:
-        """Queue a silent audio payload"""
+        """排队无声音频payload"""
         audio_payload = prepare_audio_payload(
             audio_path=None,
             display_text=display_text,
@@ -136,7 +136,7 @@ class TTSTaskManager:
         tts_engine: TTSInterface,
         sequence_number: int,
     ) -> None:
-        """Process TTS generation and queue the result for ordered delivery"""
+        """处理TTS生成并排队结果以有序传递"""
         audio_file_path = None
         try:
             audio_file_path = await self._generate_audio(tts_engine, tts_text)
@@ -164,7 +164,7 @@ class TTSTaskManager:
                 logger.debug("Audio cache file cleaned.")
 
     async def _generate_audio(self, tts_engine: TTSInterface, text: str) -> str:
-        """Generate audio file from text"""
+        """从文本生成音频文件"""
         logger.debug(f"🏃Generating audio for '''{text}'''...")
         return await tts_engine.async_generate_audio(
             text=text,
@@ -172,7 +172,7 @@ class TTSTaskManager:
         )
 
     def clear(self) -> None:
-        """Clear all pending tasks and reset state"""
+        """清除所有待处理任务并重置状态"""
         self.task_list.clear()
         if self._sender_task:
             self._sender_task.cancel()

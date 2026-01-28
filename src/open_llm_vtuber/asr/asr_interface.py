@@ -9,16 +9,16 @@ class ASRInterface(metaclass=abc.ABCMeta):
     SAMPLE_WIDTH = 2
 
     async def async_transcribe_np(self, audio: np.ndarray) -> str:
-        """Asynchronously transcribe speech audio in numpy array format.
+        """异步转录 numpy 数组格式的语音音频。
 
-        By default, this runs the synchronous transcribe_np in a coroutine.
-        Subclasses can override this method to provide true async implementation.
+        默认情况下，此方法在协程中运行同步的 transcribe_np。
+        子类可以重写此方法以提供真正的异步实现。
 
-        Args:
-            audio: The numpy array of the audio data to transcribe.
+        参数:
+            audio: 要转录的音频数据的 numpy 数组。
 
-        Returns:
-            str: The transcription result.
+        返回:
+            str: 转录结果。
         """
         if audio.dtype != np.float32:
             audio = audio.astype(np.float32)
@@ -26,28 +26,28 @@ class ASRInterface(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def transcribe_np(self, audio: np.ndarray) -> str:
-        """Transcribe speech audio in numpy array format and return the transcription.
+        """转录 numpy 数组格式的语音音频并返回转录结果。
 
-        Args:
-            audio: The numpy array of the audio data to transcribe.
+        参数:
+            audio: 要转录的音频数据的 numpy 数组。
         """
         raise NotImplementedError
 
     def nparray_to_audio_file(
         self, audio: np.ndarray, sample_rate: int, file_path: str
     ) -> None:
-        """Convert a numpy array of audio data to a .wav file.
+        """将音频数据的 numpy 数组转换为 .wav 文件。
 
-        Args:
-            audio: The numpy array of audio data.
-            sample_rate: The sample rate of the audio data.
-            file_path: The path to save the .wav file.
+        参数:
+            audio: 音频数据的 numpy 数组。
+            sample_rate: 音频数据的采样率。
+            file_path: 保存 .wav 文件的路径。
         """
         import wave
 
-        # Make sure the audio is in the range [-1, 1]
+        # 确保音频在 [-1, 1] 范围内
         audio = np.clip(audio, -1, 1)
-        # Convert the audio to 16-bit PCM
+        # 将音频转换为 16 位 PCM
         audio_integer = (audio * 32767).astype(np.int16)
 
         with wave.open(file_path, "wb") as wf:

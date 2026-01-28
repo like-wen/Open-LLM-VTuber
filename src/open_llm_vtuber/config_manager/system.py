@@ -5,7 +5,7 @@ from .i18n import I18nMixin, Description
 
 
 class SystemConfig(I18nMixin):
-    """System configuration settings."""
+    """系统配置设置。"""
 
     conf_version: str = Field(..., alias="conf_version")
     host: str = Field(..., alias="host")

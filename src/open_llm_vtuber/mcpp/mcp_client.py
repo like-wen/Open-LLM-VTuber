@@ -15,8 +15,8 @@ DEFAULT_TIMEOUT = timedelta(seconds=30)
 
 
 class MCPClient:
-    """MCP Client for Open-LLM-Vtuber.
-    Manages persistent connections to multiple MCP servers.
+    """Open-LLM-Vtuber 的 MCP 客户端。
+    管理到多个 MCP 服务器的持久连接。
     """
 
     def __init__(
@@ -25,7 +25,7 @@ class MCPClient:
         send_text: Callable = None,
         client_uid: str = None,
     ) -> None:
-        """Initialize the MCP Client."""
+        """初始化 MCP 客户端。"""
         self.exit_stack: AsyncExitStack = AsyncExitStack()
         self.active_sessions: Dict[str, ClientSession] = {}
         self._list_tools_cache: Dict[str, List[Tool]] = {}  # Cache for list_tools
@@ -43,7 +43,7 @@ class MCPClient:
     async def _ensure_server_running_and_get_session(
         self, server_name: str
     ) -> ClientSession:
-        """Gets the existing session or creates a new one."""
+        """获取现有会话或创建新会话。"""
         if server_name in self.active_sessions:
             return self.active_sessions[server_name]
 
@@ -81,7 +81,7 @@ class MCPClient:
             ) from e
 
     async def list_tools(self, server_name: str) -> List[Tool]:
-        """List all available tools on the specified server."""
+        """列出指定服务器上的所有可用工具。"""
         # Check cache first
         if server_name in self._list_tools_cache:
             logger.debug(f"MCPC: Cache hit for list_tools on server '{server_name}'.")
@@ -101,10 +101,10 @@ class MCPClient:
     async def call_tool(
         self, server_name: str, tool_name: str, tool_args: Dict[str, Any]
     ) -> Dict[str, Any]:
-        """Call a tool on the specified server.
+        """在指定服务器上调用工具。
 
-        Returns:
-            Dict containing the metadata and content_items from the tool response.
+        返回:
+            包含工具响应中的元数据和 content_items 的字典。
         """
         session = await self._ensure_server_running_and_get_session(server_name)
         logger.info(f"MCPC: Calling tool '{tool_name}' on server '{server_name}'...")
@@ -155,7 +155,7 @@ class MCPClient:
         return result
 
     async def aclose(self) -> None:
-        """Closes all active server connections."""
+        """关闭所有活动的服务器连接。"""
         logger.info(
             f"MCPC: Closing client instance and {len(self.active_sessions)} active connections..."
         )
@@ -166,11 +166,11 @@ class MCPClient:
         logger.info("MCPC: Client instance closed.")
 
     async def __aenter__(self) -> "MCPClient":
-        """Enter the async context manager."""
+        """进入异步上下文管理器。"""
         return self
 
     async def __aexit__(self, exc_type, exc_value, traceback) -> None:
-        """Exit the async context manager."""
+        """退出异步上下文管理器。"""
         await self.aclose()
         if exc_type:
             logger.error(f"MCPC: Exception in async context: {exc_value}")

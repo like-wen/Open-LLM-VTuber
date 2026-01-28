@@ -73,10 +73,10 @@ class VoiceRecognition(ASRInterface):
 
     def _get_final_model_input(self, alias_or_id: Optional[str]) -> Optional[str]:
         """
-        Process model input function:
-        1. Check mapping table to get canonical ModelScope ID.
-        2. Try to get local path using snapshot_download.
-        3. If local path is valid, return local path, otherwise return canonical ModelScope ID.
+        处理模型输入函数：
+        1. 检查映射表以获取规范的 ModelScope ID。
+        2. 尝试使用 snapshot_download 获取本地路径。
+        3. 如果本地路径有效，返回本地路径，否则返回规范的 ModelScope ID。
         """
         if not alias_or_id:
             return None

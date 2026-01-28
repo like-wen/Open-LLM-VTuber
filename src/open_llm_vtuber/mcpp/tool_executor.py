@@ -25,9 +25,9 @@ class ToolExecutor:
         self._tool_manager = tool_manager
 
     def parse_tool_call(self, call: Union[Dict[str, Any], ToolCallObject]) -> tuple:
-        """Parse tool call from different formats.
+        """从不同格式解析工具调用。
 
-        Returns:
+        返回:
             tuple: (tool_name, tool_id, tool_input, is_error, result_content, parse_error)
         """
         tool_name: str = ""
@@ -82,7 +82,7 @@ class ToolExecutor:
         result_content: str,
         is_error: bool,
     ) -> Dict[str, Any] | None:
-        """Format tool result for LLM API."""
+        """为 LLM API 格式化工具结果。"""
         if caller_mode == "Claude":
             # Claude expects content as a list of blocks or a simple string
             # We will return a list if there are multiple items or non-text items
@@ -124,7 +124,7 @@ class ToolExecutor:
     def process_tool_from_prompt_json(
         self, data: List[Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
-        """Process tool data from JSON in prompt mode."""
+        """处理提示模式中的 JSON 工具数据。"""
         parsed_tools = []
         for item in data:
             server = item.get("mcp_server")
@@ -157,7 +157,7 @@ class ToolExecutor:
         tool_calls: Union[List[Dict[str, Any]], List[ToolCallObject]],
         caller_mode: Literal["Claude", "OpenAI", "Prompt"],
     ) -> AsyncIterator[Dict[str, Any]]:
-        """Execute tools and yield status updates."""
+        """执行工具并产生状态更新。"""
         tool_results_for_llm = []
 
         logger.info(f"Executing {len(tool_calls)} tool(s) for {caller_mode} caller.")
@@ -303,9 +303,9 @@ class ToolExecutor:
     async def run_single_tool(
         self, tool_name: str, tool_id: str, tool_input: Any
     ) -> tuple[bool, str, Dict[str, Any], List[Dict[str, Any]]]:
-        """Run a single tool using MCPClient.
+        """使用 MCPClient 运行单个工具。
 
-        Returns:
+        返回:
             tuple: (is_error, text_content, metadata, content_items)
         """
         logger.info(f"Executing tool: {tool_name} (ID: {tool_id})")

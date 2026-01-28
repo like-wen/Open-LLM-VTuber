@@ -7,48 +7,48 @@ from ..input_types import BaseInput
 
 
 class AgentInterface(ABC):
-    """Base interface for all agent implementations"""
+    """所有代理实现的基础接口"""
 
     @abstractmethod
     async def chat(self, input_data: BaseInput) -> AsyncIterator[BaseOutput]:
         """
-        Chat with the agent asynchronously.
+        异步与代理聊天。
 
-        This function should be implemented by the agent.
-        Output type depends on the agent's output_type:
-        - SentenceOutput: For text-based responses with display and TTS text
-        - AudioOutput: For direct audio output with display text and transcript
+        此函数应由代理实现。
+        输出类型取决于代理的 output_type：
+        - SentenceOutput: 用于带有显示文本和 TTS 文本的基于文本的响应
+        - AudioOutput: 用于带有显示文本和 transcript 的直接音频输出
 
-        Args:
-            input_data: BaseInput - User input data
+        参数:
+            input_data: BaseInput - 用户输入数据
 
-        Returns:
-            AsyncIterator[BaseOutput] - Stream of agent outputs
+        返回:
+            AsyncIterator[BaseOutput] - 代理输出的流
         """
-        logger.critical("Agent: No chat function set.")
-        raise ValueError("Agent: No chat function set.")
+        logger.critical("代理: 未设置聊天功能。")
+        raise ValueError("代理: 未设置聊天功能。")
 
     @abstractmethod
     def handle_interrupt(self, heard_response: str) -> None:
         """
-        Handle user interruption. This function will be called when the agent is interrupted.
+        处理用户中断。当代理被中断时，将调用此函数。
 
-        Args:
-            heard_response: str - The part of response heard before interruption
+        参数:
+            heard_response: str - 中断前听到的响应部分
         """
         logger.warning(
-            """Agent: No interrupt handler set. The agent may not handle interruptions
-            correctly. The AI may not be able to understand that it was interrupted."""
+            """代理: 未设置中断处理器。代理可能无法正确处理中断
+            。AI 可能无法理解它被中断了。"""
         )
         pass
 
     @abstractmethod
     def set_memory_from_history(self, conf_uid: str, history_uid: str) -> None:
         """
-        Load the agent's working memory from chat history
+        从聊天历史加载代理的工作记忆
 
-        Args:
-            conf_uid: str - Configuration ID
-            history_uid: str - History ID
+        参数:
+            conf_uid: str - 配置 ID
+            history_uid: str - 历史 ID
         """
         pass

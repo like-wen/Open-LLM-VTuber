@@ -4,7 +4,7 @@ from .i18n import I18nMixin, Description
 
 
 class BiliBiliLiveConfig(I18nMixin):
-    """Configuration for BiliBili Live platform."""
+    """B站直播平台配置。"""
 
     room_ids: List[int] = Field([], alias="room_ids")
     sessdata: str = Field("", alias="sessdata")
@@ -21,7 +21,7 @@ class BiliBiliLiveConfig(I18nMixin):
 
 
 class LiveConfig(I18nMixin):
-    """Configuration for live streaming platforms integration."""
+    """直播平台集成配置。"""
 
     bilibili_live: BiliBiliLiveConfig = Field(
         BiliBiliLiveConfig(), alias="bilibili_live"

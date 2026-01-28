@@ -7,7 +7,7 @@ from .i18n import I18nMixin, Description
 
 
 class DeepLXConfig(I18nMixin):
-    """Configuration for DeepLX translation service."""
+    """DeepLX 翻译服务配置。"""
 
     deeplx_target_lang: str = Field(..., alias="deeplx_target_lang")
     deeplx_api_endpoint: str = Field(..., alias="deeplx_api_endpoint")
@@ -24,16 +24,16 @@ class DeepLXConfig(I18nMixin):
 
 
 class TencentConfig(I18nMixin):
-    """Configuration for tencent translation service."""
+    """腾讯翻译服务配置。"""
 
-    secret_id: str = Field(..., description="Tencent Secret ID")
-    secret_key: str = Field(..., description="Tencent Secret Key")
-    region: str = Field(..., description="Region for Tencent Service")
+    secret_id: str = Field(..., description="腾讯 Secret ID")
+    secret_key: str = Field(..., description="腾讯 Secret Key")
+    region: str = Field(..., description="腾讯服务的区域")
     source_lang: str = Field(
-        ..., description="Source language code for tencent translation"
+        ..., description="腾讯翻译的源语言代码"
     )
     target_lang: str = Field(
-        ..., description="Target language code for tencent translation"
+        ..., description="腾讯翻译的目标语言代码"
     )
 
     DESCRIPTIONS: ClassVar[Dict[str, Description]] = {
@@ -54,7 +54,7 @@ class TencentConfig(I18nMixin):
 
 
 class TranslatorConfig(I18nMixin):
-    """Configuration for translation services."""
+    """翻译服务配置。"""
 
     translate_audio: bool = Field(..., alias="translate_audio")
     translate_provider: Literal["deeplx", "tencent"] = Field(
@@ -98,7 +98,7 @@ class TranslatorConfig(I18nMixin):
 
 
 class TTSPreprocessorConfig(I18nMixin):
-    """Configuration for TTS preprocessor."""
+    """TTS 预处理器配置。"""
 
     remove_special_char: bool = Field(..., alias="remove_special_char")
     ignore_brackets: bool = Field(default=True, alias="ignore_brackets")

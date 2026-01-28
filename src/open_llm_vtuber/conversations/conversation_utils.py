@@ -23,7 +23,7 @@ def create_batch_input(
     from_name: str,
     metadata: Optional[Dict[str, Any]] = None,
 ) -> BatchInput:
-    """Create batch input for agent processing"""
+    """为代理处理创建批处理输入"""
     return BatchInput(
         texts=[
             TextData(source=TextSource.INPUT, content=input_text, from_name=from_name)
@@ -51,7 +51,7 @@ async def process_agent_output(
     tts_manager: TTSTaskManager,
     translate_engine: Optional[Any] = None,
 ) -> str:
-    """Process agent output with character information and optional translation"""
+    """处理带有角色信息和可选翻译的代理输出"""
     output.display_text.name = character_config.character_name
     output.display_text.avatar = character_config.avatar
 
@@ -89,7 +89,7 @@ async def handle_sentence_output(
     tts_manager: TTSTaskManager,
     translate_engine: Optional[Any] = None,
 ) -> str:
-    """Handle sentence output type with optional translation support"""
+    """处理带有可选翻译支持的句子输出类型"""
     full_response = ""
     async for display_text, tts_text, actions in output:
         logger.debug(f"🏃 Processing output: '''{tts_text}'''...")
@@ -117,7 +117,7 @@ async def handle_audio_output(
     output: AudioOutput,
     websocket_send: WebSocketSend,
 ) -> str:
-    """Process and send AudioOutput directly to the client"""
+    """处理并直接向客户端发送音频输出"""
     full_response = ""
     async for audio_path, display_text, transcript, actions in output:
         full_response += transcript
@@ -131,7 +131,7 @@ async def handle_audio_output(
 
 
 async def send_conversation_start_signals(websocket_send: WebSocketSend) -> None:
-    """Send initial conversation signals"""
+    """发送初始对话信号"""
     await websocket_send(
         json.dumps(
             {
@@ -148,7 +148,7 @@ async def process_user_input(
     asr_engine: ASRInterface,
     websocket_send: WebSocketSend,
 ) -> str:
-    """Process user input, converting audio to text if needed"""
+    """处理用户输入，必要时将音频转换为文本"""
     if isinstance(user_input, np.ndarray):
         logger.info("Transcribing audio input...")
         input_text = await asr_engine.async_transcribe_np(user_input)
@@ -165,7 +165,7 @@ async def finalize_conversation_turn(
     client_uid: str,
     broadcast_ctx: Optional[BroadcastContext] = None,
 ) -> None:
-    """Finalize a conversation turn"""
+    """完成对话回合"""
     if tts_manager.task_list:
         await asyncio.gather(*tts_manager.task_list)
         await websocket_send(json.dumps({"type": "backend-synth-complete"}))
@@ -195,7 +195,7 @@ async def send_conversation_end_signal(
     broadcast_ctx: Optional[BroadcastContext],
     session_emoji: str = "😊",
 ) -> None:
-    """Send conversation chain end signal"""
+    """发送对话链结束信号"""
     chain_end_msg = {
         "type": "control",
         "text": "conversation-chain-end",
@@ -213,7 +213,7 @@ async def send_conversation_end_signal(
 
 
 def cleanup_conversation(tts_manager: TTSTaskManager, session_emoji: str) -> None:
-    """Clean up conversation resources"""
+    """清理对话资源"""
     tts_manager.clear()
     logger.debug(f"🧹 Clearing up conversation {session_emoji}.")
 

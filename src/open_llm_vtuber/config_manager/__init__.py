@@ -1,8 +1,7 @@
 """
-Configuration management package for Open LLM VTuber.
+Open LLM VTuber 的配置管理包。
 
-This package provides configuration management functionality through Pydantic models
-and utility functions for loading/saving configurations.
+该包通过 Pydantic 模型和用于加载/保存配置的实用函数提供配置管理功能。
 """
 
 # Import main configuration classes

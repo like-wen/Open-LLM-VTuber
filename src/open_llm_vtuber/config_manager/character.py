@@ -11,7 +11,7 @@ from .agent import AgentConfig
 
 
 class CharacterConfig(I18nMixin):
-    """Character configuration settings."""
+    """角色配置设置。"""
 
     conf_name: str = Field(..., alias="conf_name")
     conf_uid: str = Field(..., alias="conf_uid")

@@ -5,7 +5,7 @@ from .i18n import I18nMixin, Description
 
 
 class AzureASRConfig(I18nMixin):
-    """Configuration for Azure ASR service."""
+    """Azure ASR 服务的配置。"""
 
     api_key: str = Field(..., alias="api_key")
     region: str = Field(..., alias="region")
@@ -26,7 +26,7 @@ class AzureASRConfig(I18nMixin):
 
 
 class FasterWhisperConfig(I18nMixin):
-    """Configuration for Faster Whisper ASR."""
+    """Faster Whisper ASR 的配置。"""
 
     model_path: str = Field(..., alias="model_path")
     download_root: str = Field(..., alias="download_root")
@@ -63,7 +63,7 @@ class FasterWhisperConfig(I18nMixin):
 
 
 class WhisperCPPConfig(I18nMixin):
-    """Configuration for WhisperCPP ASR."""
+    """WhisperCPP ASR 的配置。"""
 
     model_name: str = Field(..., alias="model_name")
     model_dir: str = Field(..., alias="model_dir")
@@ -95,7 +95,7 @@ class WhisperCPPConfig(I18nMixin):
 
 
 class WhisperConfig(I18nMixin):
-    """Configuration for OpenAI Whisper ASR."""
+    """OpenAI Whisper ASR 的配置。"""
 
     name: str = Field(..., alias="name")
     download_root: str = Field(..., alias="download_root")
@@ -117,7 +117,7 @@ class WhisperConfig(I18nMixin):
 
 
 class FunASRConfig(I18nMixin):
-    """Configuration for FunASR."""
+    """FunASR 的配置。"""
 
     model_name: str = Field("iic/SenseVoiceSmall", alias="model_name")
     vad_model: str = Field("fsmn-vad", alias="vad_model")
@@ -160,7 +160,7 @@ class FunASRConfig(I18nMixin):
 
 
 class GroqWhisperASRConfig(I18nMixin):
-    """Configuration for Groq Whisper ASR."""
+    """Groq Whisper ASR 的配置。"""
 
     api_key: str = Field(..., alias="api_key")
     model: str = Field("whisper-large-v3-turbo", alias="model")
@@ -182,7 +182,7 @@ class GroqWhisperASRConfig(I18nMixin):
 
 
 class SherpaOnnxASRConfig(I18nMixin):
-    """Configuration for Sherpa Onnx ASR."""
+    """Sherpa Onnx ASR 的配置。"""
 
     model_type: Literal[
         "transducer",
@@ -308,7 +308,7 @@ class SherpaOnnxASRConfig(I18nMixin):
 
 
 class ASRConfig(I18nMixin):
-    """Configuration for Automatic Speech Recognition."""
+    """自动语音识别的配置。"""
 
     asr_model: Literal[
         "faster_whisper",

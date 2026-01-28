@@ -14,10 +14,10 @@ DEFAULT_CONFIG_PATH = "mcp_servers.json"
 
 
 class ServerRegistry:
-    """MCP Server Manager for managing server files."""
+    """用于管理服务器文件的 MCP 服务器管理器。"""
 
     def __init__(self, config_path: str | Path = DEFAULT_CONFIG_PATH) -> None:
-        """Initialize the MCP Server Manager."""
+        """初始化 MCP 服务器管理器。"""
         try:
             config_path = validate_file(config_path, ".json")
         except ValueError:
@@ -41,12 +41,12 @@ class ServerRegistry:
         self.load_servers()
 
     def _detect_runtime(self, target: str) -> bool:
-        """Check if a runtime is available in the system PATH."""
+        """检查运行时是否在系统 PATH 中可用。"""
         founded = shutil.which(target)
         return True if founded else False
 
     def load_servers(self) -> None:
-        """Load servers from the config file."""
+        """从配置文件加载服务器。"""
         servers_config: Dict[str, Dict[str, Any]] = self.config.get("mcp_servers", {})
         if servers_config == {}:
             logger.warning("MCPSR: No servers found in the config file.")
@@ -91,7 +91,7 @@ class ServerRegistry:
             logger.debug(f"MCPSR: Loaded server: '{server_name}'.")
 
     def remove_server(self, server_name: str) -> None:
-        """Remove a server from the available servers."""
+        """从可用服务器中移除一个服务器。"""
         try:
             self.servers.pop(server_name)
             logger.info(f"MCPSR: Removed server: {server_name}")
@@ -99,5 +99,5 @@ class ServerRegistry:
             logger.warning(f"MCPSR: Server '{server_name}' not found. Cannot remove.")
 
     def get_server(self, server_name: str) -> Optional[MCPServer]:
-        """Get the server by name."""
+        """按名称获取服务器。"""
         return self.servers.get(server_name, None)

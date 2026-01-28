@@ -5,15 +5,15 @@ from typing import Optional, Any
 
 @dataclass
 class MCPServer:
-    """Class representing a MCP Server
+    """表示 MCP 服务器的类
 
-    Args:
-        name (str): Name of the server.
-        command (str): Command to run the server.
-        args (list[str], optional): Arguments for the command. Defaults to an empty list.
-        env (Optional[dict[str, str]], optional): Environment variables for the command. Defaults to None.
-        cwd (Optional[str], optional): Working directory for the command. Defaults to None.
-        timeout (Optional[timedelta], optional): Timeout for the command. Defaults to 10 seconds.
+    参数:
+        name (str): 服务器名称。
+        command (str): 运行服务器的命令。
+        args (list[str], optional): 命令的参数。默认为空列表。
+        env (Optional[dict[str, str]], optional): 命令的环境变量。默认为 None。
+        cwd (Optional[str], optional): 命令的工作目录。默认为 None。
+        timeout (Optional[timedelta], optional): 命令的超时时间。默认为 30 秒。
     """
 
     name: str
@@ -27,13 +27,13 @@ class MCPServer:
 
 @dataclass
 class FormattedTool:
-    """ "Class representing a formatted tool
+    """ "表示格式化工具的类
 
-    Args:
-        input_schema (dict[str, Any]): Input schema for the tool.
-        related_server (str): The name of the server that contains the tool.
-        generic_schema (Optional[dict[str, Any]], optional): Generic schema for the tool. Defaults to None.
-        description (str, optional): Description of the tool, usually from the server's tool definition. Defaults to "No description available.".
+    参数:
+        input_schema (dict[str, Any]): 工具的输入模式。
+        related_server (str): 包含该工具的服务器名称。
+        generic_schema (Optional[dict[str, Any]], optional): 工具的通用模式。默认为 None。
+        description (str, optional): 工具的描述，通常来自服务器的工具定义。默认为 "No description available."。
     """
 
     input_schema: dict[str, Any]
@@ -44,13 +44,13 @@ class FormattedTool:
 
 @dataclass
 class ToolCallFunctionObject:
-    """Class representing a function object in a tool call
+    """表示工具调用中的函数对象的类
 
-    This class mimics the OpenAI API function object structure for tool calls.
+    此类模仿 OpenAI API 工具调用的函数对象结构。
 
-    Args:
-        name (str): Name of the function.
-        arguments (str): Arguments for the function as a JSON string.
+    参数:
+        name (str): 函数名称。
+        arguments (str): 函数的参数，以 JSON 字符串形式。
     """
 
     name: str = ""
@@ -59,15 +59,15 @@ class ToolCallFunctionObject:
 
 @dataclass
 class ToolCallObject:
-    """Class representing a tool call object
+    """表示工具调用对象的类
 
-    This class mimics the OpenAI API ChoiceDeltaToolCall structure.
+    此类模仿 OpenAI API ChoiceDeltaToolCall 结构。
 
-    Args:
-        id (str): Unique identifier for the tool call.
-        type (str): Type of the tool call, typically "function".
-        index (int): Index of the tool call in the sequence.
-        function (ToolCallFunctionObject): Function information for the tool call.
+    参数:
+        id (str): 工具调用的唯一标识符。
+        type (str): 工具调用的类型，通常是 "function"。
+        index (int): 序列中工具调用的索引。
+        function (ToolCallFunctionObject): 工具调用的函数信息。
     """
 
     id: Optional[str] = None
@@ -77,13 +77,13 @@ class ToolCallObject:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> "ToolCallObject":
-        """Create a ToolCallObject from a dictionary
+        """从字典创建 ToolCallObject
 
-        Args:
-            data (dict[str, Any]): dictionary containing tool call data.
+        参数:
+            data (dict[str, Any]): 包含工具调用数据的字典。
 
-        Returns:
-            ToolCallObject: A new ToolCallObject instance.
+        返回:
+            ToolCallObject: 新的 ToolCallObject 实例。
         """
         function = ToolCallFunctionObject(
             name=data["function"]["name"], arguments=data["function"]["arguments"]

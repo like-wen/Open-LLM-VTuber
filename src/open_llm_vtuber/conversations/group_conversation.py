@@ -37,18 +37,18 @@ async def process_group_conversation(
     session_emoji: str = np.random.choice(EMOJI_LIST),
     metadata: Optional[Dict[str, Any]] = None,
 ) -> None:
-    """Process group conversation
+    """处理群组对话
 
-    Args:
-        client_contexts: Dictionary of client contexts
-        client_connections: Dictionary of client WebSocket connections
-        broadcast_func: Function to broadcast messages to group
-        group_members: List of group member UIDs
-        initiator_client_uid: UID of conversation initiator
-        user_input: Text or audio input from user
-        images: Optional list of image data
-        session_emoji: Emoji identifier for the conversation
-        metadata: Optional metadata for special processing flags
+    参数:
+        client_contexts: 客户端上下文字典
+        client_connections: 客户端WebSocket连接字典
+        broadcast_func: 向群组广播消息的函数
+        group_members: 群组成员UID列表
+        initiator_client_uid: 对话发起者的UID
+        user_input: 用户的文本或音频输入
+        images: 可选的图像数据列表
+        session_emoji: 对话的表情符号标识符
+        metadata: 用于特殊处理标志的可选元数据
     """
     # Create TTSTaskManager for each member
     tts_managers = {uid: TTSTaskManager() for uid in group_members}
@@ -156,7 +156,7 @@ async def process_group_conversation(
 def init_group_conversation_state(
     group_members: List[str], session_emoji: str
 ) -> GroupConversationState:
-    """Initialize group conversation state"""
+    """初始化群组对话状态"""
     return GroupConversationState(
         conversation_history=[],
         memory_index={uid: 0 for uid in group_members},
@@ -168,7 +168,7 @@ def init_group_conversation_state(
 def init_group_conversation_contexts(
     client_contexts: Dict[str, ServiceContext],
 ) -> None:
-    """Initialize group conversation context for each AI participant"""
+    """为每个AI参与者初始化群组对话上下文"""
     ai_names = [ctx.character_config.character_name for ctx in client_contexts.values()]
 
     for context in client_contexts.values():
@@ -196,7 +196,7 @@ async def process_group_input(
     group_members: List[str],
     initiator_client_uid: str,
 ) -> str:
-    """Process and broadcast user input to group"""
+    """处理并向群组广播用户输入"""
     input_text = await process_user_input(
         user_input, initiator_context.asr_engine, initiator_ws_send
     )
@@ -212,7 +212,7 @@ async def broadcast_transcription(
     text: str,
     exclude_uid: str,
 ) -> None:
-    """Broadcast transcription to group members"""
+    """向群组成员广播转录内容"""
     await broadcast_func(
         group_members,
         {
@@ -234,7 +234,7 @@ async def handle_group_member_turn(
     tts_manager: TTSTaskManager,
     metadata: Optional[Dict[str, Any]] = None,
 ) -> None:
-    """Handle a single group member's conversation turn"""
+    """处理单个群组成员的对话回合"""
     # Update current speaker before processing
     state.current_speaker_uid = current_member_uid
 
@@ -312,7 +312,7 @@ async def handle_group_member_turn(
 async def broadcast_thinking_state(
     broadcast_func: BroadcastFunc, group_members: List[str]
 ) -> None:
-    """Broadcast thinking state to group"""
+    """向群组广播思考状态"""
     await broadcast_func(
         group_members,
         {"type": "control", "text": "conversation-chain-start"},
@@ -328,7 +328,7 @@ async def handle_member_error(
     group_members: List[str],
     error_message: str,
 ) -> None:
-    """Handle and broadcast member error"""
+    """处理并广播成员错误"""
     await broadcast_func(
         group_members,
         {
@@ -346,7 +346,7 @@ async def process_member_response(
     broadcast_func: Optional[BroadcastFunc] = None,
     group_members: Optional[List[str]] = None,
 ) -> str:
-    """Process group member's response, handling text/audio and tool status events."""
+    """处理群组成员的响应，处理文本/音频和工具状态事件。"""
     full_response = ""
 
     try:

@@ -10,7 +10,7 @@ BroadcastFunc = Callable[[List[str], dict, Optional[str]], Awaitable[None]]
 
 
 class AudioPayload(TypedDict):
-    """Type definition for audio payload"""
+    """音频payload的类型定义"""
 
     type: str
     audio: Optional[str]
@@ -23,7 +23,7 @@ class AudioPayload(TypedDict):
 
 @dataclass
 class BroadcastContext:
-    """Context for broadcasting messages in group chat"""
+    """群组聊天中广播消息的上下文"""
 
     broadcast_func: Optional[BroadcastFunc] = None
     group_members: Optional[List[str]] = None
@@ -31,7 +31,7 @@ class BroadcastContext:
 
 
 class ConversationConfig(BaseModel):
-    """Configuration for conversation chain"""
+    """对话链的配置"""
 
     conf_uid: str = ""
     history_uid: str = ""
@@ -41,9 +41,9 @@ class ConversationConfig(BaseModel):
 
 @dataclass
 class GroupConversationState:
-    """State for group conversation"""
+    """群组对话的状态"""
 
-    # Class variable to track current states
+    # 类变量用于跟踪当前状态
     _states: ClassVar[Dict[str, "GroupConversationState"]] = {}
 
     group_id: str
@@ -54,15 +54,15 @@ class GroupConversationState:
     current_speaker_uid: Optional[str] = None
 
     def __post_init__(self):
-        """Register state instance after initialization"""
+        """初始化后注册状态实例"""
         GroupConversationState._states[self.group_id] = self
 
     @classmethod
     def get_state(cls, group_id: str) -> Optional["GroupConversationState"]:
-        """Get conversation state by group_id"""
+        """通过group_id获取对话状态"""
         return cls._states.get(group_id)
 
     @classmethod
     def remove_state(cls, group_id: str) -> None:
-        """Remove conversation state when done"""
+        """完成后移除对话状态"""
         cls._states.pop(group_id, None)

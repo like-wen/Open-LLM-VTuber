@@ -1,6 +1,5 @@
 """
-This module contains the pydantic model for the configurations of
-different types of agents.
+此模块包含不同类型代理配置的 pydantic 模型。
 """
 
 from pydantic import BaseModel, Field
@@ -12,7 +11,7 @@ from .stateless_llm import StatelessLLMConfigs
 
 
 class BasicMemoryAgentConfig(I18nMixin, BaseModel):
-    """Configuration for the basic memory agent."""
+    """基础记忆代理的配置。"""
 
     llm_provider: Literal[
         "stateless_llm_with_template",
@@ -59,7 +58,7 @@ class BasicMemoryAgentConfig(I18nMixin, BaseModel):
 
 
 class Mem0VectorStoreConfig(I18nMixin, BaseModel):
-    """Configuration for Mem0 vector store."""
+    """Mem0 向量存储的配置。"""
 
     provider: str = Field(..., alias="provider")
     config: Dict = Field(..., alias="config")
@@ -75,7 +74,7 @@ class Mem0VectorStoreConfig(I18nMixin, BaseModel):
 
 
 class Mem0LLMConfig(I18nMixin, BaseModel):
-    """Configuration for Mem0 LLM."""
+    """Mem0 语言模型的配置。"""
 
     provider: str = Field(..., alias="provider")
     config: Dict = Field(..., alias="config")
@@ -89,7 +88,7 @@ class Mem0LLMConfig(I18nMixin, BaseModel):
 
 
 class Mem0EmbedderConfig(I18nMixin, BaseModel):
-    """Configuration for Mem0 embedder."""
+    """Mem0 嵌入模型的配置。"""
 
     provider: str = Field(..., alias="provider")
     config: Dict = Field(..., alias="config")
@@ -103,7 +102,7 @@ class Mem0EmbedderConfig(I18nMixin, BaseModel):
 
 
 class Mem0Config(I18nMixin, BaseModel):
-    """Configuration for Mem0."""
+    """Mem0 的配置。"""
 
     vector_store: Mem0VectorStoreConfig = Field(..., alias="vector_store")
     llm: Mem0LLMConfig = Field(..., alias="llm")
@@ -120,7 +119,7 @@ class Mem0Config(I18nMixin, BaseModel):
 
 
 class HumeAIConfig(I18nMixin, BaseModel):
-    """Configuration for the Hume AI agent."""
+    """Hume AI 代理的配置。"""
 
     api_key: str = Field(..., alias="api_key")
     host: str = Field("api.hume.ai", alias="host")
@@ -149,7 +148,7 @@ class HumeAIConfig(I18nMixin, BaseModel):
 
 
 class LettaConfig(I18nMixin, BaseModel):
-    """Configuration for the Letta agent."""
+    """Letta 代理的配置。"""
 
     host: str = Field("localhost", alias="host")
     port: int = Field(8283, alias="port")
@@ -173,7 +172,7 @@ class LettaConfig(I18nMixin, BaseModel):
 
 
 class AgentSettings(I18nMixin, BaseModel):
-    """Settings for different types of agents."""
+    """不同类型代理的设置。"""
 
     basic_memory_agent: Optional[BasicMemoryAgentConfig] = Field(
         None, alias="basic_memory_agent"
@@ -197,7 +196,7 @@ class AgentSettings(I18nMixin, BaseModel):
 
 
 class AgentConfig(I18nMixin, BaseModel):
-    """This class contains all of the configurations related to agent."""
+    """此类包含所有与代理相关的配置。"""
 
     conversation_agent_choice: Literal[
         "basic_memory_agent", "mem0_agent", "hume_ai_agent", "letta_agent"

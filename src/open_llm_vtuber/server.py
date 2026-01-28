@@ -1,9 +1,9 @@
 """
-Open-LLM-VTuber Server
+Open-LLM-VTuber 服务器
 ========================
-This module contains the WebSocket server for Open-LLM-VTuber, which handles
-the WebSocket connections, serves static files, and manages the web tool.
-It uses FastAPI for the server and Starlette for static file serving.
+此模块包含 Open-LLM-VTuber 的 WebSocket 服务器，负责处理
+WebSocket 连接，提供静态文件服务，并管理 Web 工具。
+它使用 FastAPI 作为服务器框架，使用 Starlette 处理静态文件服务。
 """
 
 import os
@@ -19,17 +19,17 @@ from .service_context import ServiceContext
 from .config_manager.utils import Config
 
 
-# Create a custom StaticFiles class that adds CORS headers
+# 创建一个自定义的 StaticFiles 类，用于添加 CORS 头部
 class CORSStaticFiles(StarletteStaticFiles):
     """
-    Static files handler that adds CORS headers to all responses.
-    Needed because Starlette StaticFiles might bypass standard middleware.
+    静态文件处理器，为所有响应添加 CORS 头部。
+    需要这样做是因为 Starlette 的 StaticFiles 可能会绕过标准中间件。
     """
 
     async def get_response(self, path: str, scope):
         response = await super().get_response(path, scope)
 
-        # Add CORS headers to all responses
+        # 为所有响应添加 CORS 头部
         response.headers["Access-Control-Allow-Origin"] = "*"
         response.headers["Access-Control-Allow-Methods"] = "GET, OPTIONS"
         response.headers["Access-Control-Allow-Headers"] = "*"
@@ -42,44 +42,44 @@ class CORSStaticFiles(StarletteStaticFiles):
 
 class AvatarStaticFiles(CORSStaticFiles):
     """
-    Avatar files handler with security restrictions and CORS headers
+    头像文件处理器，带有安全限制和 CORS 头部
     """
 
     async def get_response(self, path: str, scope):
         allowed_extensions = (".jpg", ".jpeg", ".png", ".gif", ".svg")
         if not any(path.lower().endswith(ext) for ext in allowed_extensions):
-            return Response("Forbidden file type", status_code=403)
+            return Response("禁止的文件类型", status_code=403)
         response = await super().get_response(path, scope)
         return response
 
 
 class WebSocketServer:
     """
-    API server for Open-LLM-VTuber. This contains the websocket endpoint for the client, hosts the web tool, and serves static files.
+    Open-LLM-VTuber 的 API 服务器。包含客户端的 WebSocket 端点，托管 Web 工具，并提供静态文件服务。
 
-    Creates and configures a FastAPI app, registers all routes
-    (WebSocket, web tools, proxy) and mounts static assets with CORS.
+    创建并配置 FastAPI 应用，注册所有路由
+    (WebSocket、Web 工具、代理) 并使用 CORS 挂载静态资源。
 
-    Args:
-        config (Config): Application configuration containing system settings.
-        default_context_cache (ServiceContext, optional):
-            Pre‑initialized service context for sessions' service context to reference to.
-            **If omitted, `initialize()` method needs to be called to load service context.**
+    参数:
+        config (Config): 包含系统设置的应用配置。
+        default_context_cache (ServiceContext, 可选):
+            预初始化的服务上下文，供会话的服务上下文引用。
+            **如果省略，则需要调用 `initialize()` 方法加载服务上下文。**
 
-    Notes:
-        - If default_context_cache is omitted, call `await initialize()` to load service context cache.
-        - Use `clean_cache()` to clear and recreate the local cache directory.
+    注意:
+        - 如果省略了 default_context_cache，请调用 `await initialize()` 加载服务上下文缓存。
+        - 使用 `clean_cache()` 清理并重新创建本地缓存目录。
     """
 
     def __init__(self, config: Config, default_context_cache: ServiceContext = None):
-        self.app = FastAPI(title="Open-LLM-VTuber Server")  # Added title for clarity
+        self.app = FastAPI(title="Open-LLM-VTuber Server")  # 添加标题以提高清晰度
         self.config = config
         self.default_context_cache = (
             default_context_cache or ServiceContext()
-        )  # Use provided context or initialize a new empty one waiting to be loaded
-        # It will be populated during the initialize method call
+        )  # 使用提供的上下文或初始化一个空的上下文等待加载
+        # 它将在 initialize 方法调用期间被填充
 
-        # Add global CORS middleware
+        # 添加全局 CORS 中间件
         self.app.add_middleware(
             CORSMiddleware,
             allow_origins=["*"],
@@ -88,8 +88,8 @@ class WebSocketServer:
             allow_headers=["*"],
         )
 
-        # Include routes, passing the context instance
-        # The context will be populated during the initialize step
+        # 包含路由，传递上下文实例
+        # 上下文将在初始化步骤中被填充
         self.app.include_router(
             init_client_ws_route(default_context_cache=self.default_context_cache),
         )
@@ -97,10 +97,10 @@ class WebSocketServer:
             init_webtool_routes(default_context_cache=self.default_context_cache),
         )
 
-        # Initialize and include proxy routes if proxy is enabled
+        # 如果启用了代理，则初始化并包含代理路由
         system_config = config.system_config
         if hasattr(system_config, "enable_proxy") and system_config.enable_proxy:
-            # Construct the server URL for the proxy
+            # 为代理构建服务器 URL
             host = system_config.host
             port = system_config.port
             server_url = f"ws://{host}:{port}/client-ws"
@@ -108,7 +108,7 @@ class WebSocketServer:
                 init_proxy_route(server_url=server_url),
             )
 
-        # Mount cache directory first (to ensure audio file access)
+        # 首先挂载缓存目录（以确保音频文件访问）
         if not os.path.exists("cache"):
             os.makedirs("cache")
         self.app.mount(
@@ -117,7 +117,7 @@ class WebSocketServer:
             name="cache",
         )
 
-        # Mount static files with CORS-enabled handlers
+        # 使用启用了 CORS 的处理器挂载静态文件
         self.app.mount(
             "/live2d-models",
             CORSStaticFiles(directory="live2d-models"),
@@ -134,14 +134,14 @@ class WebSocketServer:
             name="avatars",
         )
 
-        # Mount web tool directory separately from frontend
+        # 将 Web 工具目录与前端分开挂载
         self.app.mount(
             "/web-tool",
             CORSStaticFiles(directory="web_tool", html=True),
             name="web_tool",
         )
 
-        # Mount main frontend last (as catch-all)
+        # 最后挂载主前端（作为通配符）
         self.app.mount(
             "/",
             CORSStaticFiles(directory="frontend", html=True),
@@ -149,13 +149,13 @@ class WebSocketServer:
         )
 
     async def initialize(self):
-        """Asynchronously load the service context from config.
-        Calling this function is needed if default_context_cache was not provided to the constructor."""
+        """从配置异步加载服务上下文。
+        如果构造函数中未提供 default_context_cache，则需要调用此函数。"""
         await self.default_context_cache.load_from_config(self.config)
 
     @staticmethod
     def clean_cache():
-        """Clean the cache directory by removing and recreating it."""
+        """通过删除并重新创建缓存目录来清理缓存。"""
         cache_dir = "cache"
         if os.path.exists(cache_dir):
             shutil.rmtree(cache_dir)

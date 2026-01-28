@@ -14,21 +14,21 @@ def tts_filter(
     translator: TranslateInterface | None = None,
 ) -> str:
     """
-    Filter or do anything to the text before TTS generates the audio.
-    Changes here do not affect subtitles or LLM's memory. The generated audio is
-    the only affected thing.
+    在 TTS 生成音频之前过滤或处理文本。
+    此处的更改不会影响字幕或 LLM 的记忆。生成的音频是唯一受影响的内容。
 
-    Args:
-        text (str): The text to filter.
-        remove_special_char (bool): Whether to remove special characters.
-        ignore_brackets (bool): Whether to ignore text within brackets.
-        ignore_parentheses (bool): Whether to ignore text within parentheses.
-        ignore_asterisks (bool): Whether to ignore text within asterisks.
+    参数:
+        text (str): 要过滤的文本。
+        remove_special_char (bool): 是否删除特殊字符。
+        ignore_brackets (bool): 是否忽略括号内的文本。
+        ignore_parentheses (bool): 是否忽略圆括号内的文本。
+        ignore_asterisks (bool): 是否忽略星号内的文本。
+        ignore_angle_brackets (bool): 是否忽略尖括号内的文本。
         translator (TranslateInterface, optional):
-            The translator to use. If None, we'll skip the translation. Defaults to None.
+            要使用的翻译器。如果为 None，我们将跳过翻译。默认为 None。
 
-    Returns:
-        str: The filtered text.
+    返回:
+        str: 过滤后的文本。
     """
     if ignore_asterisks:
         try:
@@ -82,13 +82,13 @@ def tts_filter(
 
 def remove_special_characters(text: str) -> str:
     """
-    Filter text to remove all non-letter, non-number, and non-punctuation characters.
+    过滤文本以删除所有非字母、非数字和非标点字符。
 
-    Args:
-        text (str): The text to filter.
+    参数:
+        text (str): 要过滤的文本。
 
-    Returns:
-        str: The filtered text.
+    返回:
+        str: 过滤后的文本。
     """
     normalized_text = unicodedata.normalize("NFKC", text)
 
@@ -107,15 +107,15 @@ def remove_special_characters(text: str) -> str:
 
 def _filter_nested(text: str, left: str, right: str) -> str:
     """
-    Generic function to handle nested symbols.
+    处理嵌套符号的通用函数。
 
-    Args:
-        text (str): The text to filter.
-        left (str): The left symbol (e.g. '[' or '(').
-        right (str): The right symbol (e.g. ']' or ')').
+    参数:
+        text (str): 要过滤的文本。
+        left (str): 左侧符号（例如 '[' 或 '('）。
+        right (str): 右侧符号（例如 ']' 或 ')'）。
 
-    Returns:
-        str: The filtered text.
+    返回:
+        str: 过滤后的文本。
     """
     if not isinstance(text, str):
         raise TypeError("Input must be a string")
@@ -140,52 +140,52 @@ def _filter_nested(text: str, left: str, right: str) -> str:
 
 def filter_brackets(text: str) -> str:
     """
-    Filter text to remove all text within brackets, handling nested cases.
+    过滤文本以删除方括号内的所有文本，处理嵌套情况。
 
-    Args:
-        text (str): The text to filter.
+    参数:
+        text (str): 要过滤的文本。
 
-    Returns:
-        str: The filtered text.
+    返回:
+        str: 过滤后的文本。
     """
     return _filter_nested(text, "[", "]")
 
 
 def filter_parentheses(text: str) -> str:
     """
-    Filter text to remove all text within parentheses, handling nested cases.
+    过滤文本以删除圆括号内的所有文本，处理嵌套情况。
 
-    Args:
-        text (str): The text to filter.
+    参数:
+        text (str): 要过滤的文本。
 
-    Returns:
-        str: The filtered text.
+    返回:
+        str: 过滤后的文本。
     """
     return _filter_nested(text, "(", ")")
 
 
 def filter_angle_brackets(text: str) -> str:
     """
-    Filter text to remove all text within angle brackets, handling nested cases.
+    过滤文本以删除尖括号内的所有文本，处理嵌套情况。
 
-    Args:
-        text (str): The text to filter.
+    参数:
+        text (str): 要过滤的文本。
 
-    Returns:
-        str: The filtered text.
+    返回:
+        str: 过滤后的文本。
     """
     return _filter_nested(text, "<", ">")
 
 
 def filter_asterisks(text: str) -> str:
     """
-    Removes text enclosed within asterisks of any length (*, **, ***, etc.) from a string.
+    从字符串中删除任意长度星号（*、**、***等）包围的文本。
 
-    Args:
-        text: The input string.
+    参数:
+        text: 输入字符串。
 
-    Returns:
-        The string with asterisk-enclosed text removed.
+    返回:
+        删除星号包围文本后的字符串。
     """
     # Handle asterisks of any length (*, **, ***, etc.)
     filtered_text = re.sub(r"\*{1,}((?!\*).)*?\*{1,}", "", text)

@@ -12,7 +12,7 @@ import urllib.request
 
 
 class InstallationManager:
-    """Class to manage the installation of dependencies"""
+    """用于管理依赖项安装的类"""
 
     def __init__(self):
         self.root_dir = Path.cwd()
@@ -30,7 +30,7 @@ class InstallationManager:
             self.activate_script = self.conda_dir / "bin" / "activate"
 
     def download_miniconda(self):
-        """Download appropriate Miniconda installer"""
+        """下载适当的 Miniconda 安装程序"""
         system = platform.system().lower()
         machine = platform.machine().lower()
 
@@ -55,7 +55,7 @@ class InstallationManager:
         return installer
 
     def install_miniconda(self, installer):
-        """Install Miniconda to local directory"""
+        """将 Miniconda 安装到本地目录"""
         if platform.system().lower() == "windows":
             subprocess.run(
                 [str(installer), "/S", "/D=" + str(self.conda_dir)], check=True
@@ -70,7 +70,7 @@ class InstallationManager:
         installer.unlink()
 
     def create_environment(self):
-        """Create conda environment with Python 3.10"""
+        """创建带有 Python 3.10 的 conda 环境"""
         subprocess.run(
             [
                 str(self.conda_executable),
@@ -84,7 +84,7 @@ class InstallationManager:
         )
 
     def install_conda_dependencies(self):
-        """Install conda dependencies"""
+        """安装 conda 依赖项"""
         subprocess.run(
             [
                 str(self.conda_executable),
@@ -99,7 +99,7 @@ class InstallationManager:
         )
 
     def install_pip_dependencies(self):
-        """Install pip dependencies"""
+        """安装 pip 依赖项"""
         # Activate environment first
         if platform.system().lower() == "windows":
             activate_cmd = f"call {self.activate_script} {self.env_name}"
@@ -118,7 +118,7 @@ class InstallationManager:
             subprocess.run(["bash", "-c", pip_install_cmd], check=True)
 
     def check_environment(self):
-        """Check if 'open-llm-vtuber' environment exists and install if not"""
+        """检查 'open-llm-vtuber' 环境是否存在，如果不存在则安装"""
         result = subprocess.run(
             [str(self.conda_executable), "env", "list"],
             capture_output=True,
@@ -131,7 +131,7 @@ class InstallationManager:
             self.install_pip_dependencies()
 
     def setup(self):
-        """Run complete setup process"""
+        """运行完整的设置过程"""
         if not self.conda_dir.exists():
             installer = self.download_miniconda()
             self.install_miniconda(installer)

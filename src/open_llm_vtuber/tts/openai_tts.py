@@ -15,9 +15,9 @@ sys.path.append(current_dir)
 
 class TTSEngine(TTSInterface):
     """
-    Uses an OpenAI-compatible TTS API endpoint to generate speech.
-    Connects to a server specified by `base_url`.
-    API Reference: https://platform.openai.com/docs/api-reference/audio/createSpeech (for standard parameters)
+    使用与 OpenAI 兼容的 TTS API 端点生成语音。
+    连接到由 `base_url` 指定的服务器。
+    API 参考: https://platform.openai.com/docs/api-reference/audio/createSpeech (用于标准参数)
     """
 
     def __init__(
@@ -30,13 +30,13 @@ class TTSEngine(TTSInterface):
         **kwargs,  # Allow passing additional args to OpenAI client
     ):
         """
-        Initializes the OpenAI TTS engine.
+        初始化 OpenAI TTS 引擎。
 
-        Args:
-            model (str): The TTS model to use (e.g., 'tts-1', 'tts-1-hd').
-            voice (str): The voice to use (e.g., 'alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer').
-            api_key (str, optional): API key for the TTS service. Defaults to "not-needed".
-            base_url (str, optional): Base URL of the OpenAI-compatible TTS endpoint. Defaults to "http://localhost:8880/v1".
+        参数:
+            model (str): 要使用的 TTS 模型（例如，'tts-1', 'tts-1-hd'）。
+            voice (str): 要使用的语音（例如，'alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'）。
+            api_key (str, optional): TTS 服务的 API 密钥。默认为 "not-needed"。
+            base_url (str, optional): 与 OpenAI 兼容的 TTS 端点的基本 URL。默认为 "http://localhost:8880/v1"。
         """
         self.model = model
         self.voice = voice
@@ -64,15 +64,15 @@ class TTSEngine(TTSInterface):
 
     def generate_audio(self, text, file_name_no_ext=None, speed=1.0):
         """
-        Generate speech audio file using OpenAI TTS.
+        使用 OpenAI TTS 生成语音音频文件。
 
-        Args:
-            text (str): The text to synthesize.
-            file_name_no_ext (str, optional): Name of the file without extension. Defaults to a generated name.
-            speed (float): The speed of the speech (0.25 to 4.0). Defaults to 1.0.
+        参数:
+            text (str): 要合成的文本。
+            file_name_no_ext (str, optional): 不带扩展名的文件名。默认为生成的名称。
+            speed (float): 语音的速度（0.25 到 4.0）。默认为 1.0。
 
-        Returns:
-            str: The path to the generated audio file, or None if generation failed.
+        返回:
+            str: 生成的音频文件的路径，如果生成失败则返回 None。
         """
         if not self.client:
             logger.error("OpenAI client not initialized. Cannot generate audio.")

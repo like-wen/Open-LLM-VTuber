@@ -10,8 +10,8 @@ from .tts_interface import TTSInterface
 
 class TTSEngine(TTSInterface):
     """
-    Uses ElevenLabs TTS API to generate speech.
-    API Reference: https://elevenlabs.io/docs/api-reference/text-to-speech
+    使用 ElevenLabs TTS API 生成语音。
+    API 参考: https://elevenlabs.io/docs/api-reference/text-to-speech
     """
 
     def __init__(
@@ -26,17 +26,17 @@ class TTSEngine(TTSInterface):
         use_speaker_boost: bool = True,
     ):
         """
-        Initializes the ElevenLabs TTS engine.
+        初始化 ElevenLabs TTS 引擎。
 
-        Args:
-            api_key (str): API key for ElevenLabs service.
-            voice_id (str): Voice ID from ElevenLabs (e.g., JBFqnCBsd6RMkjVDRZzb).
-            model_id (str): Model ID for ElevenLabs (e.g., eleven_multilingual_v2).
-            output_format (str): Output audio format (e.g., mp3_44100_128).
-            stability (float): Voice stability (0.0 to 1.0).
-            similarity_boost (float): Voice similarity boost (0.0 to 1.0).
-            style (float): Voice style exaggeration (0.0 to 1.0).
-            use_speaker_boost (bool): Enable speaker boost for better quality.
+        参数:
+            api_key (str): ElevenLabs 服务的 API 密钥。
+            voice_id (str): 来自 ElevenLabs 的语音 ID (例如，JBFqnCBsd6RMkjVDRZzb)。
+            model_id (str): ElevenLabs 的模型 ID (例如，eleven_multilingual_v2)。
+            output_format (str): 输出音频格式 (例如，mp3_44100_128)。
+            stability (float): 语音稳定性 (0.0 到 1.0)。
+            similarity_boost (float): 语音相似度增强 (0.0 到 1.0)。
+            style (float): 语音风格夸张程度 (0.0 到 1.0)。
+            use_speaker_boost (bool): 为更好质量启用扬声器增强。
         """
         self.api_key = api_key
         self.voice_id = voice_id
@@ -71,14 +71,14 @@ class TTSEngine(TTSInterface):
         self, text: str, file_name_no_ext: str | None = None
     ) -> str | None:
         """
-        Generate speech audio file using ElevenLabs TTS.
+        使用 ElevenLabs TTS 生成语音音频文件。
 
-        Args:
-            text (str): The text to synthesize.
-            file_name_no_ext (str, optional): Name of the file without extension. Defaults to a generated name.
+        参数:
+            text (str): 要合成的文本。
+            file_name_no_ext (str, optional): 不带扩展名的文件名。默认为生成的名称。
 
-        Returns:
-            str: The path to the generated audio file, or None if generation failed.
+        返回:
+            str: 生成的音频文件的路径，如果生成失败则返回 None。
         """
         if not self.client:
             logger.error("ElevenLabs client not initialized. Cannot generate audio.")

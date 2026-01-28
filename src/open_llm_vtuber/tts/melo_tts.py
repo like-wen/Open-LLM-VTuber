@@ -36,15 +36,15 @@ class TTSEngine(TTSInterface):
 
     def generate_audio(self, text, file_name_no_ext=None):
         """
-        Generate speech audio file using TTS.
+        使用 TTS 生成语音音频文件。
         text: str
-            the text to speak
+            要朗读的文本
         file_name_no_ext: str
-            name of the file without extension
+            不带扩展名的文件名
 
 
-        Returns:
-        str: the path to the generated audio file
+        返回:
+        str: 生成的音频文件的路径
 
         """
         try:

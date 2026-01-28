@@ -6,7 +6,7 @@ from .tts_interface import TTSInterface
 
 class TTSEngine(TTSInterface):
     """
-    Fish TTS that calls the FishTTS API service.
+    调用 FishTTS API 服务的 Fish TTS。
     """
 
     file_extension: str = "wav"
@@ -19,17 +19,17 @@ class TTSEngine(TTSInterface):
         base_url="https://api.fish.audio",
     ):
         """
-        Initialize the Fish TTS API.
+        初始化 Fish TTS API。
 
-        Args:
-            api_key (str): The API key for the Fish TTS API.
+        参数:
+            api_key (str): Fish TTS API 的 API 密钥。
 
-            reference_id (str): The reference ID for the voice to be used.
-                Get it on the [Fish Audio website](https://fish.audio/).
+            reference_id (str): 要使用的语音的参考 ID。
+                在 [Fish Audio 网站](https://fish.audio/) 上获取。
 
-            latency (str): Either "normal" or "balanced". balance is faster but lower quality.
+            latency (str): "normal" 或 "balanced"。balance 更快但质量较低。
 
-            base_url (str): The base URL for the Fish TTS API.
+            base_url (str): Fish TTS API 的基础 URL。
 
         """
 

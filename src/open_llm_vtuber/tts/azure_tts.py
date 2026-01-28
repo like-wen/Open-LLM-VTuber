@@ -15,17 +15,17 @@ class TTSEngine(TTSInterface):
 
     def __init__(self, api_key, region, voice, pitch=0, rate=1.0):
         """
-        Initialize the Azure Text-to-Speech service
+        初始化 Azure 文本转语音服务
         api_key: str
-            the Azure API key. Default is the value in api_keys.py
+            Azure API 密钥。默认值在 api_keys.py 中
         region: str
-            the Azure region. Default is the value in api_keys.py
+            Azure 区域。默认值在 api_keys.py 中
         voice: str
-            the voice to use. Default is the value in api_keys.py
+            使用的语音。默认值在 api_keys.py 中
         pitch: int
-            the pitch adjustment. (percentage, from -100 to 100) Default is 0 (no adjustment)
+            音调调整。（百分比，从 -100 到 100）默认值为 0（无调整）
         rate: float
-            the speaking rate. Default is 1.0 (normal speed)
+            说话速率。默认值为 1.0（正常速度）
         """
         # This example requires environment variables named "SPEECH_KEY" and "SPEECH_REGION"
         self.speech_config = speechsdk.SpeechConfig(subscription=api_key, region=region)
@@ -45,14 +45,14 @@ class TTSEngine(TTSInterface):
 
     def generate_audio(self, text, file_name_no_ext=None):
         """
-        Generate speech audio file using TTS.
+        使用 TTS 生成语音音频文件。
         text: str
-            the text to speak
+            要朗读的文本
         file_name_no_ext: str
-            name of the file without extension
+            不带扩展名的文件名
 
-        Returns:
-        str: the path to the generated audio file
+        返回:
+        str: 生成的音频文件的路径
         """
 
         file_name = self.generate_cache_file_name(file_name_no_ext, self.file_extension)
@@ -70,15 +70,15 @@ class TTSEngine(TTSInterface):
         on_speak_end_callback=None,
     ):
         """
-        speak the text with specified audio configuration
+        使用指定的音频配置朗读文本
         text: str
-            the text to speak
+            要朗读的文本
         audio_config: speechsdk.audio.AudioOutputConfig
-            the audio configuration to use
+            要使用的音频配置
         on_speak_start_callback: function
-            the callback function to call when synthesis starts
+            合成开始时要调用的回调函数
         on_speak_end_callback: function
-            the callback function to call when synthesis ends
+            合成结束时要调用的回调函数
         """
         speech_synthesizer = speechsdk.SpeechSynthesizer(
             speech_config=self.speech_config, audio_config=audio_config

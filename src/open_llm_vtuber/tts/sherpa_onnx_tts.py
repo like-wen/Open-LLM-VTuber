@@ -49,7 +49,7 @@ class TTSEngine(TTSInterface):
 
     def initialize_tts(self):
         """
-        Initialize the sherpa-onnx TTS engine.
+        初始化 sherpa-onnx TTS 引擎。
         """
         # Construct the configuration for the TTS engine
         tts_config = sherpa_onnx.OfflineTtsConfig(
@@ -78,14 +78,14 @@ class TTSEngine(TTSInterface):
 
     def generate_audio(self, text, file_name_no_ext=None):
         """
-        Generate speech audio file using sherpa-onnx TTS.
+        使用 sherpa-onnx TTS 生成语音音频文件。
 
-        Parameters:
-            text (str): The text to speak.
-            file_name_no_ext (str, optional): Name of the file without extension.
+        参数:
+            text (str): 要朗读的文本。
+            file_name_no_ext (str, optional): 不带扩展名的文件名。
 
-        Returns:
-            str: The path to the generated audio file.
+        返回:
+            str: 生成的音频文件的路径。
         """
         file_name = self.generate_cache_file_name(file_name_no_ext, self.file_extension)
 

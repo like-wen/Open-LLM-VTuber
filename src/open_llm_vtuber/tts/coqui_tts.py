@@ -8,7 +8,7 @@ from .tts_interface import TTSInterface
 
 class TTSEngine(TTSInterface):
     """
-    CoquiTTS engine implementation supporting both single-speaker and multi-speaker modes.
+    支持单说话人和多说话人模式的 CoquiTTS 引擎实现。
     """
 
     def __init__(
@@ -19,13 +19,13 @@ class TTSEngine(TTSInterface):
         device: Optional[str] = None,
     ):
         """
-        Initialize CoquiTTS engine.
+        初始化 CoquiTTS 引擎。
 
-        Args:
-            model_name: Name of the TTS model to use. If None, will use default model.
-            speaker_wav: Path to speaker wav file for voice cloning. Only used in multi-speaker mode.
-            language: Language code for multi-lingual models. Default is "en".
-            device: Device to run model on ("cuda", "cpu", etc). If None, will auto-detect.
+        参数:
+            model_name: 要使用的 TTS 模型名称。如果为 None，则使用默认模型。
+            speaker_wav: 用于声音克隆的说话人 wav 文件路径。仅在多说话人模式下使用。
+            language: 多语言模型的语言代码。默认为 "en"。
+            device: 运行模型的设备（"cuda"、"cpu" 等）。如果为 None，则自动检测。
         """
         # Auto-detect device if not specified
         if device:
@@ -57,14 +57,14 @@ class TTSEngine(TTSInterface):
 
     def generate_audio(self, text: str, file_name_no_ext: Optional[str] = None) -> str:
         """
-        Generate speech audio file using CoquiTTS.
+        使用 CoquiTTS 生成语音音频文件。
 
-        Args:
-            text: Text to synthesize
-            file_name_no_ext: Output filename without extension (optional)
+        参数:
+            text: 要合成的文本
+            file_name_no_ext: 不带扩展名的输出文件名（可选）
 
-        Returns:
-            Path to generated audio file
+        返回:
+            生成的音频文件的路径
         """
         try:
             # Generate output path
@@ -96,10 +96,10 @@ class TTSEngine(TTSInterface):
     @staticmethod
     def list_available_models() -> list:
         """
-        List all available CoquiTTS models.
+        列出所有可用的 CoquiTTS 模型。
 
-        Returns:
-            List of available model names
+        返回:
+            可用模型名称列表
         """
         try:
             return TTS().list_models()
@@ -108,10 +108,10 @@ class TTSEngine(TTSInterface):
 
     def get_speaker_info(self) -> dict:
         """
-        Get information about available speakers for multi-speaker models.
+        获取关于多说话人模型的可用说话人的信息。
 
-        Returns:
-            Dictionary containing speaker information
+        返回:
+            包含说话人信息的字典
         """
         if not self.is_multi_speaker:
             return {"multi_speaker": False}

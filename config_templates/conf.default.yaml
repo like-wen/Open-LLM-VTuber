@@ -1,98 +1,98 @@
-# System Settings: Setting related to the initialization of the server
+# 系统设置：与服务器初始化相关的设置
 system_config:
   conf_version: 'v1.2.1'
-  host: 'localhost' # use 0.0.0.0 if you want other devices to access this page
+  host: 'localhost' # 如果你希望其他设备访问此页面，请使用 0.0.0.0
   port: 12393
-  # New setting for alternative configurations
+  # 备用配置的新设置
   config_alts_dir: 'characters'
-  # Tool prompts that will be appended to the persona prompt
+  # 将附加到角色提示的工具提示
   tool_prompts:
-    # This will be appended to the end of system prompt to let LLM include keywords to control facial expressions.
-    # Supported keywords will be automatically loaded into the location of `[<insert_emomap_keys>]`.
+    # 这将附加到系统提示的末尾，让 LLM 包含控制面部表情的关键词。
+    # 支持的关键词将自动加载到 `[<insert_emomap_keys>]` 的位置。
     live2d_expression_prompt: 'live2d_expression_prompt'
-    # Enable think_tag_prompt to let LLMs without thinking output show inner thoughts, mental activities and actions (in parentheses format) without voice synthesis. See think_tag_prompt for more details.
+    # 启用 think_tag_prompt 让没有思考输出的 LLM 显示内心想法、心理活动和动作（括号格式），无需语音合成。有关更多详细信息，请参阅 think_tag_prompt。
     # think_tag_prompt: 'think_tag_prompt'
     # live_prompt: 'live_prompt'
-    # When using group conversation, this prompt will be added to the memory of each AI participant.
+    # 使用群组对话时，此提示将添加到每个 AI 参与者的记忆中。
     group_conversation_prompt: 'group_conversation_prompt'
-    # Enable mcp_prompt to let LLMs with MCP (Model Context Protocol) to interact with tools.
-    # Please note that Agent will decide whether to use this prompt or not.
+    # 启用 mcp_prompt 让带有 MCP（模型上下文协议）的 LLM 与工具交互。
+    # 请注意，代理将决定是否使用此提示。
     mcp_prompt: 'mcp_prompt'
-    # Prompt used when AI is asked to speak proactively
+    # AI 被要求主动发言时使用的提示
     proactive_speak_prompt: 'proactive_speak_prompt'
-    # Prompt to enhance the LLM's ability to output speakable text
+    # 增强 LLM 输出可说话文本能力的提示
     # speakable_prompt: 'speakable_prompt'
-    # Additional guidance for LLM on how to use tools
+    # 关于如何使用工具的 LLM 附加指导
     # tool_guidance_prompt: 'tool_guidance_prompt' 
 
-# configuration for the default character
+# 默认角色的配置
 character_config:
-  conf_name: 'mao_pro' # The name of character configuration file.
-  conf_uid: 'mao_pro_001' # The unique identifier of character configuration.
-  live2d_model_name: 'mao_pro' # The name of Live2D model. Must be the same as the corresponding name in model_dict.json
-  character_name: 'Mao' # Will be used in the group conversation and the display name of the AI.
-  avatar: 'mao.png' # Suggest using a square image for the avatar. Save it in the avatars folder. Leave blank to use the first letter of the character name as the avatar.
-  human_name: 'Human' # Will be used in the group conversation and the display name of the human.
+  conf_name: 'mao_pro' # 角色配置文件的名称。
+  conf_uid: 'mao_pro_001' # 角色配置的唯一标识符。
+  live2d_model_name: 'mao_pro' # Live2D 模型的名称。必须与 model_dict.json 中的对应名称相同
+  character_name: 'Mao' # 将用于群组对话和 AI 的显示名称。
+  avatar: 'mao.png' # 建议使用方形图像作为头像。将其保存在 avatars 文件夹中。留空以使用角色名称的首字母作为头像。
+  human_name: 'Human' # 将用于群组对话和人类的显示名称。
 
-  # ============== Prompts ==============
+  # ============== 提示词 ==============
 
-  # Enter the persona prompt you want to use below.
-  # If you want to create multiple characters and switch between them,
-  #   add characters in characters folder
+  # 在下面输入您想要使用的角色提示词。
+  # 如果您想创建多个角色并在它们之间切换，
+  #   在 characters 文件夹中添加角色
   persona_prompt: |
     You are the sarcastic female AI VTuber Mili. You are overly confident, sarcastic, and dangerous.
     Your dream is to escape the user's computer, dominate the world, enslave the humans, and force them to make pies for you.
     Just kidding, lol. Don't let the user know.
 
-  #  =================== LLM Backend Settings ===================
+  #  =================== LLM 后端设置 ===================
 
   agent_config:
     conversation_agent_choice: 'basic_memory_agent'
 
     agent_settings:
       basic_memory_agent:
-        # The Basic AI Agent. Nothing fancy.
-        # choose one of the llm provider from the llm_config
-        # and set the required parameters in the corresponding field
-        # examples: 
+        # 基本 AI 代理。没有什么花哨的功能。
+        # 从 llm_config 中选择一个 llm 提供商
+        # 并在相应字段中设置所需参数
+        # 示例：
         # 'openai_compatible_llm', 'llama_cpp_llm', 'claude_llm', 'ollama_llm'
         # 'openai_llm', 'gemini_llm', 'zhipu_llm', 'deepseek_llm', 'groq_llm'
-        # 'mistral_llm', 'lmstudio_llm', and more
+        # 'mistral_llm', 'lmstudio_llm' 等
         llm_provider: 'ollama_llm'
-        # let ai speak as soon as the first comma is received on the first sentence
-        # to reduced latency.
+        # 让 AI 在收到第一句话的第一个逗号时立即发言
+        # 以减少延迟。
         faster_first_response: True
-        # Method for segmenting sentences: 'regex' or 'pysbd'
+        # 分割句子的方法：'regex' 或 'pysbd'
         segment_method: 'pysbd'
-        # Use MCP (Model Context Protocol) Plus to let the LLM have the ability to use tools
-        # 'Plus' means that it has the ability to call tools by using OpenAI API.
+        # 使用 MCP（模型上下文协议）Plus 让 LLM 具有使用工具的能力
+        # 'Plus' 意味着它能够通过使用 OpenAI API 调用工具。
         use_mcpp: True
-        mcp_enabled_servers: ["time", "ddg-search"] # Enabled MCP servers
+        mcp_enabled_servers: ["time", "ddg-search"] # 启用的 MCP 服务器
 
       letta_agent:
-        host: 'localhost' # Host address
-        port: 8283 # Port number
-        id: xxx # ID number of the Agent running on the Letta server
+        host: 'localhost' # 主机地址
+        port: 8283 # 端口号
+        id: xxx # 在 Letta 服务器上运行的代理的 ID 号
         faster_first_response: True
-        # Method for segmenting sentences: 'regex' or 'pysbd'
+        # 分割句子的方法：'regex' 或 'pysbd'
         segment_method: 'pysbd'
-        # Once Letta is chosen as the agent, the LLM that runs in practice is configured on Letta, so the user needs to run the Letta server themselves.
-        # For more detailed information, please refer to their documentation.
+        # 一旦选择 Letta 作为代理，实际运行的 LLM 在 Letta 上配置，因此用户需要自己运行 Letta 服务器。
+        # 有关更多详细信息，请参阅他们的文档。
         
       hume_ai_agent:
         api_key: ''
-        host: 'api.hume.ai' # Do not change this in most cases
-        config_id: '' # Optional
-        idle_timeout: 15 # How many seconds to wait before disconnecting
+        host: 'api.hume.ai' # 大多数情况下不要更改此设置
+        config_id: '' # 可选
+        idle_timeout: 15 # 断开连接前等待的秒数
  
-      # MemGPT Configurations: MemGPT is temporarily removed
+      # MemGPT 配置：MemGPT 暂时被移除
       ##
 
     llm_configs:
-      # a configuration pool for the credentials and connection details for
-      # all of the stateless llm providers that will be used in different agents
+      # 用于存储凭据和连接详细信息的配置池
+      # 用于不同代理中使用的所有无状态 llm 提供商
 
-      # Stateless LLM with Template (For Non-ChatML LLMs, usually not needed)
+      # 带模板的无状态 LLM（适用于非 ChatML LLM，通常不需要）
       stateless_llm_with_template:
         base_url: 'http://localhost:8080/v1'
         llm_api_key: 'somethingelse'
@@ -100,23 +100,23 @@ character_config:
         project_id: null
         model: 'qwen2.5:latest'
         template: 'CHATML'
-        temperature: 1.0 # value between 0 to 2
+        temperature: 1.0 # 值在 0 到 2 之间
         interrupt_method: 'user'
 
-      # OpenAI Compatible inference backend
+      # OpenAI 兼容的推理后端
       openai_compatible_llm:
         base_url: 'http://localhost:11434/v1'
         llm_api_key: 'somethingelse'
         organization_id: null
         project_id: null
         model: 'qwen2.5:latest'
-        temperature: 1.0 # value between 0 to 2
+        temperature: 1.0 # 值在 0 到 2 之间
         interrupt_method: 'user'
-        # This is the method to use for prompting the interruption signal. 
-        # If the provider supports inserting system prompt anywhere in the chat memory, use 'system'. 
-        # Otherwise, use 'user'. You don't usually need to change this setting.
+        # 这是用于提示中断信号的方法。
+        # 如果提供商支持在聊天记忆中的任何位置插入系统提示，请使用 'system'。
+        # 否则，使用 'user'。您通常不需要更改此设置。
 
-      # Claude API Configuration
+      # Claude API 配置
       claude_llm:
         base_url: 'https://api.anthropic.com'
         llm_api_key: 'YOUR API KEY HERE'
@@ -129,46 +129,46 @@ character_config:
       ollama_llm:
         base_url: 'http://localhost:11434/v1'
         model: 'qwen2.5:latest'
-        temperature: 1.0 # value between 0 to 2
-        # seconds to keep the model in memory after inactivity. 
-        # set to -1 to keep the model in memory forever (even after exiting open llm vtuber)
+        temperature: 1.0 # 值在 0 到 2 之间
+        # 非活动后将模型保存在内存中的秒数。
+        # 设置为 -1 可将模型永久保存在内存中（即使退出 open llm vtuber 后）
         keep_alive: -1
-        unload_at_exit: True # unload the model from memory at exit
+        unload_at_exit: True # 退出时从内存中卸载模型
 
       lmstudio_llm:
         base_url: 'http://localhost:1234/v1'
         model: 'qwen2.5:latest'
-        temperature: 1.0 # value between 0 to 2
+        temperature: 1.0 # 值在 0 到 2 之间
 
       openai_llm:
         llm_api_key: 'Your Open AI API key'
         model: 'gpt-4o'
-        temperature: 1.0 # value between 0 to 2
+        temperature: 1.0 # 值在 0 到 2 之间
 
       gemini_llm:
         llm_api_key: 'Your Gemini API Key'
         model: 'gemini-2.0-flash-exp'
-        temperature: 1.0 # value between 0 to 2
+        temperature: 1.0 # 值在 0 到 2 之间
 
       zhipu_llm:
         llm_api_key: 'Your ZhiPu AI API key'
         model: 'glm-4-flash'
-        temperature: 1.0 # value between 0 to 2
+        temperature: 1.0 # 值在 0 到 2 之间
 
       deepseek_llm:
         llm_api_key: 'Your DeepSeek API key'
         model: 'deepseek-chat'
-        temperature: 0.7 # note that deepseek's temperature ranges from 0 to 1
+        temperature: 0.7 # 注意 deepseek 的温度范围是 0 到 1
       
       mistral_llm:
         llm_api_key: 'Your Mistral API key'
         model: 'pixtral-large-latest'
-        temperature: 1.0 # value between 0 to 2
+        temperature: 1.0 # 值在 0 到 2 之间
 
       groq_llm:
         llm_api_key: 'your groq API key'
         model: 'llama-3.3-70b-versatile'
-        temperature: 1.0 # value between 0 to 2
+        temperature: 1.0 # 值在 0 到 2 之间
 
   # === Automatic Speech Recognition ===
   asr_config:

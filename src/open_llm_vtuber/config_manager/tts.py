@@ -112,7 +112,7 @@ CartesiaEmotions = Literal[
 
 
 class AzureTTSConfig(I18nMixin):
-    """Configuration for Azure TTS service."""
+    """Azure TTS 服务的配置。"""
 
     api_key: str = Field(..., alias="api_key")
     region: str = Field(..., alias="region")

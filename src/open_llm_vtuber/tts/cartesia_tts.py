@@ -41,8 +41,8 @@ mp3_output_format: OutputFormat_Mp3Params = {
 
 class TTSEngine(TTSInterface):
     """
-    Uses Cartesia TTS API to generate speech.
-    API Reference: https://docs.cartesia.ai/use-an-sdk/python
+    使用 Cartesia TTS API 生成语音。
+    API 参考: https://docs.cartesia.ai/use-an-sdk/python
     """
 
     def __init__(
@@ -57,17 +57,17 @@ class TTSEngine(TTSInterface):
         speed: float = 1.0,
     ):
         """
-        Initializes the Cartesia TTS engine.
+        初始化 Cartesia TTS 引擎。
 
-        Args:
-            api_key (str): API key for Cartesia service.
-            voice_id (str): Voice ID from Cartesia (e.g., 6ccbfb76-1fc6-48f7-b71d-91ac6298247b).
-            model_id (str): Model ID for Cartesia (e.g., sonic-3).
-            language (CartesiaLanguages): The language that the given voice should speak (e.g., en).
-            volume (int): The volume of the generation, ranging from 0.5 to 2.0 (e.g., 1).
-            speed (int): The speed of the generation, ranging from 0.6 to 1.5 (e.g., 1).
-            emotion (CartesiaEmotions): The emotional guidance for a generation (e.g., neutral).
-            output_format (str): Output audio format (e.g., mp3).
+        参数:
+            api_key (str): Cartesia 服务的 API 密钥。
+            voice_id (str): 来自 Cartesia 的语音 ID (例如，6ccbfb76-1fc6-48f7-b71d-91ac6298247b)。
+            model_id (str): Cartesia 的模型 ID (例如，sonic-3)。
+            language (CartesiaLanguages): 给定语音应说的语言 (例如，en)。
+            volume (int): 生成的音量，范围从 0.5 到 2.0 (例如，1)。
+            speed (int): 生成的速度，范围从 0.6 到 1.5 (例如，1)。
+            emotion (CartesiaEmotions): 生成的情感指导 (例如，neutral)。
+            output_format (str): 输出音频格式 (例如，mp3)。
         """
         if not CARTESIA_AVAILABLE:
             raise ImportError(
@@ -93,14 +93,14 @@ class TTSEngine(TTSInterface):
 
     def generate_audio(self, text: str, file_name_no_ext: str | None = None) -> str:
         """
-        Generate speech audio file using Cartesia TTS.
+        使用 Cartesia TTS 生成语音音频文件。
 
-        Args:
-            text (str): The text to synthesize.
-            file_name_no_ext (str, optional): Name of the file without extension. Defaults to a generated name.
+        参数:
+            text (str): 要合成的文本。
+            file_name_no_ext (str, optional): 不带扩展名的文件名。默认为生成的名称。
 
-        Returns:
-            str: The path to the generated audio file, or None if generation failed.
+        返回:
+            str: 生成的音频文件的路径，如果生成失败则返回 None。
         """
         if not self.client:
             logger.error("Cartesia client not initialized. Cannot generate audio.")

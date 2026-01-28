@@ -1,6 +1,5 @@
-"""Description: This file contains the implementation of the `AsyncLLM` class.
-This class is responsible for handling asynchronous interaction with OpenAI API compatible
-endpoints for language generation.
+"""描述: 此文件包含 `AsyncLLM` 类的实现。
+此类负责处理与 OpenAI API 兼容端点的异步交互，用于语言生成。
 """
 
 from typing import AsyncIterator, List, Dict, Any
@@ -32,15 +31,15 @@ class AsyncLLM(StatelessLLMInterface):
         temperature: float = 1.0,
     ):
         """
-        Initializes an instance of the `AsyncLLM` class.
+        初始化 `AsyncLLM` 类的实例。
 
-        Parameters:
-        - model (str): The model to be used for language generation.
-        - base_url (str): The base URL for the OpenAI API.
-        - organization_id (str, optional): The organization ID for the OpenAI API. Defaults to "z".
-        - project_id (str, optional): The project ID for the OpenAI API. Defaults to "z".
-        - llm_api_key (str, optional): The API key for the OpenAI API. Defaults to "z".
-        - temperature (float, optional): What sampling temperature to use, between 0 and 2. Defaults to 1.0.
+        参数:
+        - model (str): 用于语言生成的模型。
+        - base_url (str): OpenAI API 的基础 URL。
+        - organization_id (str, optional): OpenAI API 的组织 ID。默认为 "z"。
+        - project_id (str, optional): OpenAI API 的项目 ID。默认为 "z"。
+        - llm_api_key (str, optional): OpenAI API 的 API 密钥。默认为 "z"。
+        - temperature (float, optional): 使用的采样温度，介于 0 和 2 之间。默认为 1.0。
         """
         self.base_url = base_url
         self.model = model
@@ -64,21 +63,21 @@ class AsyncLLM(StatelessLLMInterface):
         tools: List[Dict[str, Any]] | NotGiven = NOT_GIVEN,
     ) -> AsyncIterator[str | List[ChoiceDeltaToolCall]]:
         """
-        Generates a chat completion using the OpenAI API asynchronously.
+        使用 OpenAI API 异步生成聊天完成。
 
-        Parameters:
-        - messages (List[Dict[str, Any]]): The list of messages to send to the API.
-        - system (str, optional): System prompt to use for this completion.
-        - tools (List[Dict[str, str]], optional): List of tools to use for this completion.
+        参数:
+        - messages (List[Dict[str, Any]]): 要发送到 API 的消息列表。
+        - system (str, optional): 用于此完成的系统提示。
+        - tools (List[Dict[str, str]], optional): 用于此完成的工具列表。
 
-        Yields:
-        - str: The content of each chunk from the API response.
-        - List[ChoiceDeltaToolCall]: The tool calls detected in the response.
+        产生:
+        - str: API 响应中每个 chunk 的内容。
+        - List[ChoiceDeltaToolCall]: 响应中检测到的工具调用。
 
-        Raises:
-        - APIConnectionError: When the server cannot be reached
-        - RateLimitError: When a 429 status code is received
-        - APIError: For other API-related errors
+        引发:
+        - APIConnectionError: 当无法连接到服务器时
+        - RateLimitError: 当收到 429 状态码时
+        - APIError: 其他与 API 相关的错误
         """
         stream = None
         # Tool call related state variables

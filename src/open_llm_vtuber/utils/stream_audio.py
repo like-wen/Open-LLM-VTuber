@@ -7,14 +7,14 @@ from ..agent.output_types import DisplayText
 
 def _get_volume_by_chunks(audio: AudioSegment, chunk_length_ms: int) -> list:
     """
-    Calculate the normalized volume (RMS) for each chunk of the audio.
+    计算音频每个块的归一化音量（RMS）。
 
-    Parameters:
-        audio (AudioSegment): The audio segment to process.
-        chunk_length_ms (int): The length of each audio chunk in milliseconds.
+    参数:
+        audio (AudioSegment): 要处理的音频段。
+        chunk_length_ms (int): 每个音频块的长度（以毫秒为单位）。
 
-    Returns:
-        list: Normalized volumes for each chunk.
+    返回:
+        list: 每个块的归一化音量。
     """
     chunks = make_chunks(audio, chunk_length_ms)
     volumes = [chunk.rms for chunk in chunks]
@@ -32,17 +32,17 @@ def prepare_audio_payload(
     forwarded: bool = False,
 ) -> dict[str, any]:
     """
-    Prepares the audio payload for sending to a broadcast endpoint.
-    If audio_path is None, returns a payload with audio=None for silent display.
+    准备发送到广播端点的音频载荷。
+    如果 audio_path 为 None，则返回一个 audio=None 的载荷用于静默显示。
 
-    Parameters:
-        audio_path (str | None): The path to the audio file to be processed, or None for silent display
-        chunk_length_ms (int): The length of each audio chunk in milliseconds
-        display_text (DisplayText, optional): Text to be displayed with the audio
-        actions (Actions, optional): Actions associated with the audio
+    参数:
+        audio_path (str | None): 要处理的音频文件路径，或者为 None 以进行静默显示
+        chunk_length_ms (int): 每个音频块的长度（以毫秒为单位）
+        display_text (DisplayText, optional): 与音频一起显示的文本
+        actions (Actions, optional): 与音频相关的操作
 
-    Returns:
-        dict: The audio payload to be sent
+    返回:
+        dict: 要发送的音频载荷
     """
     if isinstance(display_text, DisplayText):
         display_text = display_text.to_dict()

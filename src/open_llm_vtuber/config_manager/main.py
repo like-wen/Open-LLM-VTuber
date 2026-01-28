@@ -10,7 +10,7 @@ from .i18n import I18nMixin, Description
 
 class Config(I18nMixin, BaseModel):
     """
-    Main configuration for the application.
+    应用程序的主要配置。
     """
 
     system_config: SystemConfig = Field(default=None, alias="system_config")

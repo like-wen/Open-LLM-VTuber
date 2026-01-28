@@ -14,11 +14,11 @@ from .stateless_llm.claude_llm import AsyncLLM as ClaudeLLM
 class LLMFactory:
     @staticmethod
     def create_llm(llm_provider, **kwargs) -> Type[StatelessLLMInterface]:
-        """Create an LLM based on the configuration.
+        """根据配置创建一个 LLM。
 
-        Args:
-            llm_provider: The type of LLM to create
-            **kwargs: Additional arguments
+        参数:
+            llm_provider: 要创建的 LLM 类型
+            **kwargs: 额外参数
         """
         logger.info(f"Initializing LLM: {llm_provider}")
 

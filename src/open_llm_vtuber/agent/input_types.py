@@ -4,7 +4,7 @@ from typing import List, Optional, Dict, Any
 
 
 class ImageSource(Enum):
-    """Enum for different image sources"""
+    """不同图像来源的枚举"""
 
     CAMERA = "camera"
     SCREEN = "screen"
@@ -13,7 +13,7 @@ class ImageSource(Enum):
 
 
 class TextSource(Enum):
-    """Enum for different text sources"""
+    """不同文本来源的枚举"""
 
     INPUT = "input"  # Main user input/transcription
     CLIPBOARD = "clipboard"  # Text from clipboard
@@ -22,12 +22,12 @@ class TextSource(Enum):
 @dataclass
 class ImageData:
     """
-    Represents an image from various sources
+    表示来自各种来源的图像
 
-    Attributes:
-        source: Source of the image
-        data: Base64 encoded image data or URL
-        mime_type: MIME type of the image (e.g., 'image/jpeg', 'image/png')
+    属性:
+        source: 图像的来源
+        data: Base64 编码的图像数据或 URL
+        mime_type: 图像的 MIME 类型（例如 'image/jpeg', 'image/png'）
     """
 
     source: ImageSource
@@ -38,12 +38,12 @@ class ImageData:
 @dataclass
 class FileData:
     """
-    Represents a file uploaded by the user
+    表示用户上传的文件
 
-    Attributes:
-        name: Original filename
-        data: Base64 encoded file data
-        mime_type: MIME type of the file
+    属性:
+        name: 原始文件名
+        data: Base64 编码的文件数据
+        mime_type: 文件的 MIME 类型
     """
 
     name: str
@@ -54,12 +54,12 @@ class FileData:
 @dataclass
 class TextData:
     """
-    Represents text data from various sources
+    表示来自各种来源的文本数据
 
-    Attributes:
-        source: Source of the text
-        content: str - The text content
-        from_name: Optional[str] - Name of the sender/character
+    属性:
+        source: 文本的来源
+        content: str - 文本内容
+        from_name: Optional[str] - 发送者/角色的名称
     """
 
     source: TextSource
@@ -68,7 +68,7 @@ class TextData:
 
 
 class BaseInput:
-    """Base class for all input types"""
+    """所有输入类型的基类"""
 
     pass
 
@@ -76,16 +76,16 @@ class BaseInput:
 @dataclass
 class BatchInput(BaseInput):
     """
-    Input type for batch processing, containing complete transcription and optional media
+    批量处理的输入类型，包含完整的转录和可选的媒体
 
-    Attributes:
-        texts: List of text data from different sources
-        images: Optional list of images
-        files: Optional list of files
-        metadata: Optional dictionary of metadata flags for special inputs
-            - 'proactive_speak': Boolean flag indicating if this is a proactive speak input
-            - 'skip_memory': Boolean flag indicating if this input should be skipped in AI's internal memory
-            - 'skip_history': Boolean flag indicating if this input should be skipped in local history storage
+    属性:
+        texts: 来自不同来源的文本数据列表
+        images: 可选的图像列表
+        files: 可选的文件列表
+        metadata: 特殊输入的元数据标志的可选字典
+            - 'proactive_speak': 布尔标志，指示这是否是主动发言输入
+            - 'skip_memory': 布尔标志，指示此输入是否应在 AI 的内部内存中跳过
+            - 'skip_history': 布尔标志，指示此输入是否应在本地历史存储中跳过
     """
 
     texts: List[TextData]

@@ -31,19 +31,19 @@ async def process_single_conversation(
     session_emoji: str = np.random.choice(EMOJI_LIST),
     metadata: Optional[Dict[str, Any]] = None,
 ) -> str:
-    """Process a single-user conversation turn
+    """处理单用户对话回合
 
-    Args:
-        context: Service context containing all configurations and engines
-        websocket_send: WebSocket send function
-        client_uid: Client unique identifier
-        user_input: Text or audio input from user
-        images: Optional list of image data
-        session_emoji: Emoji identifier for the conversation
-        metadata: Optional metadata for special processing flags
+    参数:
+        context: 包含所有配置和引擎的服务上下文
+        websocket_send: WebSocket 发送函数
+        client_uid: 客户端唯一标识符
+        user_input: 用户的文本或音频输入
+        images: 可选的图像数据列表
+        session_emoji: 对话的表情符号标识符
+        metadata: 用于特殊处理标志的可选元数据
 
-    Returns:
-        str: Complete response text
+    返回:
+        str: 完整的响应文本
     """
     # Create TTSTaskManager for this conversation
     tts_manager = TTSTaskManager()

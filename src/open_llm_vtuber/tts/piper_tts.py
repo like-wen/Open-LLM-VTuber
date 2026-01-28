@@ -36,17 +36,17 @@ class TTSEngine(TTSInterface):
         normalize_audio: bool = True,
         use_cuda: bool = False,
     ):
-        """Initializes the Piper TTS engine using the Python API.
+        """使用 Python API 初始化 Piper TTS 引擎。
 
-        Args:
-            model_path: Path to the Piper ONNX model file.
-            speaker_id: Speaker ID for multi-speaker models.
-            length_scale: Speed control (e.g., 1.0 is normal speed).
-            noise_scale: Audio variation level (0.0-1.0).
-            noise_w: Speaking style variation (0.0-1.0).
-            volume: Volume level (0.0-1.0).
-            normalize_audio: Whether to normalize audio.
-            use_cuda: Whether to use GPU acceleration.
+        参数:
+            model_path: Piper ONNX 模型文件的路径。
+            speaker_id: 多说话人模型的说话人 ID。
+            length_scale: 速度控制（例如，1.0 是正常速度）。
+            noise_scale: 音频变化级别（0.0-1.0）。
+            noise_w: 说话风格变化（0.0-1.0）。
+            volume: 音量级别（0.0-1.0）。
+            normalize_audio: 是否标准化音频。
+            use_cuda: 是否使用 GPU 加速。
         """
         if not PIPER_AVAILABLE:
             raise ImportError(
@@ -93,14 +93,14 @@ class TTSEngine(TTSInterface):
     def generate_audio(
         self, text: str, file_name_no_ext: str | None = None
     ) -> str | None:
-        """Generates a speech audio file using the Piper TTS Python API.
+        """使用 Piper TTS Python API 生成语音音频文件。
 
-        Args:
-            text: The text to convert to speech.
-            file_name_no_ext: The name of the file without the extension. Defaults to None.
+        参数:
+            text: 要转换为语音的文本。
+            file_name_no_ext: 不带扩展名的文件名。默认为 None。
 
-        Returns:
-            The path to the generated audio file, or None on failure.
+        返回:
+            生成的音频文件的路径，如果失败则返回 None。
         """
         file_name = self.generate_cache_file_name(file_name_no_ext)
 

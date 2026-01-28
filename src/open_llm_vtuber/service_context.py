@@ -39,8 +39,8 @@ from .config_manager import (
 
 
 class ServiceContext:
-    """Initializes, stores, and updates the asr, tts, and llm instances and other
-    configurations for a connected client."""
+    """初始化、存储和更新 ASR、TTS 和 LLM 实例以及其他
+    为连接客户端配置的参数。"""
 
     def __init__(self):
         self.config: Config = None
@@ -51,7 +51,7 @@ class ServiceContext:
         self.asr_engine: ASRInterface = None
         self.tts_engine: TTSInterface = None
         self.agent_engine: AgentInterface = None
-        # translate_engine can be none if translation is disabled
+        # 如果禁用翻译，translate_engine 可以为 None
         self.vad_engine: VADInterface | None = None
         self.translate_engine: TranslateInterface | None = None
 
@@ -61,13 +61,13 @@ class ServiceContext:
         self.mcp_client: MCPClient | None = None
         self.tool_executor: ToolExecutor | None = None
 
-        # the system prompt is a combination of the persona prompt and live2d expression prompt
+        # 系统提示是角色提示和 Live2D 表情提示的组合
         self.system_prompt: str = None
 
-        # Store the generated MCP prompt string (if MCP enabled)
+        # 存储生成的 MCP 提示字符串（如果启用了 MCP）
         self.mcp_prompt: str = ""
 
-        self.history_uid: str = ""  # Add history_uid field
+        self.history_uid: str = ""  # 添加 history_uid 字段
 
         self.send_text: Callable = None
         self.client_uid: str = None
@@ -75,30 +75,30 @@ class ServiceContext:
     def __str__(self):
         return (
             f"ServiceContext:\n"
-            f"  System Config: {'Loaded' if self.system_config else 'Not Loaded'}\n"
-            f"    Details: {json.dumps(self.system_config.model_dump(), indent=6) if self.system_config else 'None'}\n"
-            f"  Live2D Model: {self.live2d_model.model_info if self.live2d_model else 'Not Loaded'}\n"
-            f"  ASR Engine: {type(self.asr_engine).__name__ if self.asr_engine else 'Not Loaded'}\n"
-            f"    Config: {json.dumps(self.character_config.asr_config.model_dump(), indent=6) if self.character_config.asr_config else 'None'}\n"
-            f"  TTS Engine: {type(self.tts_engine).__name__ if self.tts_engine else 'Not Loaded'}\n"
-            f"    Config: {json.dumps(self.character_config.tts_config.model_dump(), indent=6) if self.character_config.tts_config else 'None'}\n"
-            f"  LLM Engine: {type(self.agent_engine).__name__ if self.agent_engine else 'Not Loaded'}\n"
-            f"    Agent Config: {json.dumps(self.character_config.agent_config.model_dump(), indent=6) if self.character_config.agent_config else 'None'}\n"
-            f"  VAD Engine: {type(self.vad_engine).__name__ if self.vad_engine else 'Not Loaded'}\n"
-            f"    Agent Config: {json.dumps(self.character_config.vad_config.model_dump(), indent=6) if self.character_config.vad_config else 'None'}\n"
-            f"  System Prompt: {self.system_prompt or 'Not Set'}\n"
-            f"  MCP Enabled: {'Yes' if self.mcp_client else 'No'}"
+            f"  系统配置: {'已加载' if self.system_config else '未加载'}\n"
+            f"    详情: {json.dumps(self.system_config.model_dump(), indent=6) if self.system_config else '无'}\n"
+            f"  Live2D 模型: {self.live2d_model.model_info if self.live2d_model else '未加载'}\n"
+            f"  ASR 引擎: {type(self.asr_engine).__name__ if self.asr_engine else '未加载'}\n"
+            f"    配置: {json.dumps(self.character_config.asr_config.model_dump(), indent=6) if self.character_config.asr_config else '无'}\n"
+            f"  TTS 引擎: {type(self.tts_engine).__name__ if self.tts_engine else '未加载'}\n"
+            f"    配置: {json.dumps(self.character_config.tts_config.model_dump(), indent=6) if self.character_config.tts_config else '无'}\n"
+            f"  LLM 引擎: {type(self.agent_engine).__name__ if self.agent_engine else '未加载'}\n"
+            f"    代理配置: {json.dumps(self.character_config.agent_config.model_dump(), indent=6) if self.character_config.agent_config else '无'}\n"
+            f"  VAD 引擎: {type(self.vad_engine).__name__ if self.vad_engine else '未加载'}\n"
+            f"    代理配置: {json.dumps(self.character_config.vad_config.model_dump(), indent=6) if self.character_config.vad_config else '无'}\n"
+            f"  系统提示: {self.system_prompt or '未设置'}\n"
+            f"  MCP 已启用: {'是' if self.mcp_client else '否'}"
         )
 
     # ==== Initializers
 
     async def _init_mcp_components(self, use_mcpp, enabled_servers):
-        """Initializes MCP components based on configuration, dynamically fetching tool info."""
+        """根据配置初始化 MCP 组件，动态获取工具信息。"""
         logger.debug(
-            f"Initializing MCP components: use_mcpp={use_mcpp}, enabled_servers={enabled_servers}"
+            f"初始化 MCP 组件: use_mcpp={use_mcpp}, enabled_servers={enabled_servers}"
         )
 
-        # Reset MCP components first
+        # 首先重置 MCP 组件
         self.mcp_server_registery = None
         self.tool_manager = None
         self.mcp_client = None
@@ -107,17 +107,17 @@ class ServiceContext:
         self.mcp_prompt = ""
 
         if use_mcpp and enabled_servers:
-            # 1. Initialize ServerRegistry
+            # 1. 初始化 ServerRegistry
             self.mcp_server_registery = ServerRegistry()
-            logger.info("ServerRegistry initialized or referenced.")
+            logger.info("ServerRegistry 已初始化或引用。")
 
-            # 2. Use ToolAdapter to get the MCP prompt and tools
+            # 2. 使用 ToolAdapter 获取 MCP 提示和工具
             if not self.tool_adapter:
                 logger.error(
-                    "ToolAdapter not initialized before calling _init_mcp_components."
+                    "调用 _init_mcp_components 前未初始化 ToolAdapter。"
                 )
-                self.mcp_prompt = "[Error: ToolAdapter not initialized]"
-                return  # Exit if ToolAdapter is mandatory and not initialized
+                self.mcp_prompt = "[错误: ToolAdapter 未初始化]"
+                return  # 如果 ToolAdapter 是必需的且未初始化，则退出
 
             try:
                 (
@@ -125,16 +125,16 @@ class ServiceContext:
                     openai_tools,
                     claude_tools,
                 ) = await self.tool_adapter.get_tools(enabled_servers)
-                # Store the generated prompt string
+                # 存储生成的提示字符串
                 self.mcp_prompt = mcp_prompt_string
                 logger.info(
-                    f"Dynamically generated MCP prompt string (length: {len(self.mcp_prompt)})."
+                    f"动态生成的 MCP 提示字符串 (长度: {len(self.mcp_prompt)})。"
                 )
                 logger.info(
-                    f"Dynamically formatted tools - OpenAI: {len(openai_tools)}, Claude: {len(claude_tools)}."
+                    f"动态格式化的工具 - OpenAI: {len(openai_tools)}, Claude: {len(claude_tools)}。"
                 )
 
-                # 3. Initialize ToolManager with the fetched formatted tools
+                # 3. 使用获取的格式化工具初始化 ToolManager
 
                 _, raw_tools_dict = await self.tool_adapter.get_server_and_tool_info(
                     enabled_servers
@@ -144,59 +144,59 @@ class ServiceContext:
                     formatted_tools_claude=claude_tools,
                     initial_tools_dict=raw_tools_dict,
                 )
-                logger.info("ToolManager initialized with dynamically fetched tools.")
+                logger.info("ToolManager 已使用动态获取的工具初始化。")
 
             except Exception as e:
                 logger.error(
-                    f"Failed during dynamic MCP tool construction: {e}", exc_info=True
+                    f"动态 MCP 工具构建失败: {e}", exc_info=True
                 )
-                # Ensure dependent components are not created if construction fails
+                # 确保如果构建失败，不会创建依赖组件
                 self.tool_manager = None
-                self.mcp_prompt = "[Error constructing MCP tools/prompt]"
+                self.mcp_prompt = "[构建 MCP 工具/提示时出错]"
 
-            # 4. Initialize MCPClient
+            # 4. 初始化 MCPClient
             if self.mcp_server_registery:
                 self.mcp_client = MCPClient(
                     self.mcp_server_registery, self.send_text, self.client_uid
                 )
-                logger.info("MCPClient initialized for this session.")
+                logger.info("此会话的 MCPClient 已初始化。")
             else:
                 logger.error(
-                    "MCP enabled but ServerRegistry not available. MCPClient not created."
+                    "MCP 已启用但 ServerRegistry 不可用。未创建 MCPClient。"
                 )
-                self.mcp_client = None  # Ensure it's None
+                self.mcp_client = None  # 确保为 None
 
-            # 5. Initialize ToolExecutor
+            # 5. 初始化 ToolExecutor
             if self.mcp_client and self.tool_manager:
                 self.tool_executor = ToolExecutor(self.mcp_client, self.tool_manager)
-                logger.info("ToolExecutor initialized for this session.")
+                logger.info("此会话的 ToolExecutor 已初始化。")
             else:
                 logger.warning(
-                    "MCPClient or ToolManager not available. ToolExecutor not created."
+                    "MCPClient 或 ToolManager 不可用。未创建 ToolExecutor。"
                 )
-                self.tool_executor = None  # Ensure it's None
+                self.tool_executor = None  # 确保为 None
 
-            logger.info("StreamJSONDetector initialized for this session.")
+            logger.info("此会话的 StreamJSONDetector 已初始化。")
 
         elif use_mcpp and not enabled_servers:
             logger.warning(
-                "use_mcpp is True, but mcp_enabled_servers list is empty. MCP components not initialized."
+                "use_mcpp 为 True，但 mcp_enabled_servers 列表为空。未初始化 MCP 组件。"
             )
         else:
             logger.debug(
-                "MCP components not initialized (use_mcpp is False or no enabled servers)."
+                "MCP 组件未初始化 (use_mcpp 为 False 或无启用的服务器)。"
             )
 
     async def close(self):
-        """Clean up resources, especially the MCPClient."""
-        logger.info("Closing ServiceContext resources...")
+        """清理资源，尤其是 MCPClient。"""
+        logger.info("关闭 ServiceContext 资源...")
         if self.mcp_client:
-            logger.info(f"Closing MCPClient for context instance {id(self)}...")
+            logger.info(f"关闭上下文实例 {id(self)} 的 MCPClient...")
             await self.mcp_client.aclose()
             self.mcp_client = None
         if self.agent_engine and hasattr(self.agent_engine, "close"):
-            await self.agent_engine.close()  # Ensure agent resources are also closed
-        logger.info("ServiceContext closed.")
+            await self.agent_engine.close()  # 确保代理资源也被关闭
+        logger.info("ServiceContext 已关闭。")
 
     async def load_cache(
         self,
@@ -215,13 +215,13 @@ class ServiceContext:
         client_uid: str = None,
     ) -> None:
         """
-        Load the ServiceContext with the reference of the provided instances.
-        Pass by reference so no reinitialization will be done.
+        使用提供实例的引用加载 ServiceContext。
+        通过引用传递，因此不会重新初始化。
         """
         if not character_config:
-            raise ValueError("character_config cannot be None")
+            raise ValueError("character_config 不能为空")
         if not system_config:
-            raise ValueError("system_config cannot be None")
+            raise ValueError("system_config 不能为空")
 
         self.config = config
         self.system_config = system_config
@@ -232,27 +232,27 @@ class ServiceContext:
         self.vad_engine = vad_engine
         self.agent_engine = agent_engine
         self.translate_engine = translate_engine
-        # Load potentially shared components by reference
+        # 通过引用加载可能共享的组件
         self.mcp_server_registery = mcp_server_registery
         self.tool_adapter = tool_adapter
         self.send_text = send_text
         self.client_uid = client_uid
 
-        # Initialize session-specific MCP components
+        # 初始化会话特定的 MCP 组件
         await self._init_mcp_components(
             self.character_config.agent_config.agent_settings.basic_memory_agent.use_mcpp,
             self.character_config.agent_config.agent_settings.basic_memory_agent.mcp_enabled_servers,
         )
 
-        logger.debug(f"Loaded service context with cache: {character_config}")
+        logger.debug(f"已使用缓存加载服务上下文: {character_config}")
 
     async def load_from_config(self, config: Config) -> None:
         """
-        Load the ServiceContext with the config.
-        Reinitialize the instances if the config is different.
+        使用配置加载 ServiceContext。
+        如果配置不同，则重新初始化实例。
 
-        Parameters:
-        - config (Dict): The configuration dictionary.
+        参数:
+        - config (Config): 配置对象。
         """
         if not self.config:
             self.config = config
@@ -263,40 +263,40 @@ class ServiceContext:
         if not self.character_config:
             self.character_config = config.character_config
 
-        # update all sub-configs
+        # 更新所有子配置
 
-        # init live2d from character config
+        # 从角色配置初始化 live2d
         self.init_live2d(config.character_config.live2d_model_name)
 
-        # init asr from character config
+        # 从角色配置初始化 asr
         self.init_asr(config.character_config.asr_config)
 
-        # init tts from character config
+        # 从角色配置初始化 tts
         self.init_tts(config.character_config.tts_config)
 
-        # init vad from character config
+        # 从角色配置初始化 vad
         self.init_vad(config.character_config.vad_config)
 
-        # Initialize shared ToolAdapter if it doesn't exist yet
+        # 如果共享 ToolAdapter 尚未存在，则初始化
         if (
             not self.tool_adapter
             and config.character_config.agent_config.agent_settings.basic_memory_agent.use_mcpp
         ):
             if not self.mcp_server_registery:
                 logger.info(
-                    "Initializing shared ServerRegistry within load_from_config."
+                    "在 load_from_config 中初始化共享 ServerRegistry。"
                 )
                 self.mcp_server_registery = ServerRegistry()
-            logger.info("Initializing shared ToolAdapter within load_from_config.")
+            logger.info("在 load_from_config 中初始化共享 ToolAdapter。")
             self.tool_adapter = ToolAdapter(server_registery=self.mcp_server_registery)
 
-        # Initialize MCP Components before initializing Agent
+        # 在初始化 Agent 之前初始化 MCP 组件
         await self._init_mcp_components(
             config.character_config.agent_config.agent_settings.basic_memory_agent.use_mcpp,
             config.character_config.agent_config.agent_settings.basic_memory_agent.mcp_enabled_servers,
         )
 
-        # init agent from character config
+        # 从角色配置初始化 agent
         await self.init_agent(
             config.character_config.agent_config,
             config.character_config.persona_prompt,
@@ -306,77 +306,77 @@ class ServiceContext:
             config.character_config.tts_preprocessor_config.translator_config
         )
 
-        # store typed config references
+        # 存储类型化的配置引用
         self.config = config
         self.system_config = config.system_config or self.system_config
         self.character_config = config.character_config
 
     def init_live2d(self, live2d_model_name: str) -> None:
-        logger.info(f"Initializing Live2D: {live2d_model_name}")
+        logger.info(f"初始化 Live2D: {live2d_model_name}")
         try:
             self.live2d_model = Live2dModel(live2d_model_name)
             self.character_config.live2d_model_name = live2d_model_name
         except Exception as e:
-            logger.critical(f"Error initializing Live2D: {e}")
-            logger.critical("Try to proceed without Live2D...")
+            logger.critical(f"初始化 Live2D 时出错: {e}")
+            logger.critical("尝试在没有 Live2D 的情况下继续...")
 
     def init_asr(self, asr_config: ASRConfig) -> None:
         if not self.asr_engine or (self.character_config.asr_config != asr_config):
-            logger.info(f"Initializing ASR: {asr_config.asr_model}")
+            logger.info(f"初始化 ASR: {asr_config.asr_model}")
             self.asr_engine = ASRFactory.get_asr_system(
                 asr_config.asr_model,
                 **getattr(asr_config, asr_config.asr_model).model_dump(),
             )
-            # saving config should be done after successful initialization
+            # 成功初始化后保存配置
             self.character_config.asr_config = asr_config
         else:
-            logger.info("ASR already initialized with the same config.")
+            logger.info("ASR 已使用相同配置初始化。")
 
     def init_tts(self, tts_config: TTSConfig) -> None:
         if not self.tts_engine or (self.character_config.tts_config != tts_config):
-            logger.info(f"Initializing TTS: {tts_config.tts_model}")
+            logger.info(f"初始化 TTS: {tts_config.tts_model}")
             self.tts_engine = TTSFactory.get_tts_engine(
                 tts_config.tts_model,
                 **getattr(tts_config, tts_config.tts_model.lower()).model_dump(),
             )
-            # saving config should be done after successful initialization
+            # 成功初始化后保存配置
             self.character_config.tts_config = tts_config
         else:
-            logger.info("TTS already initialized with the same config.")
+            logger.info("TTS 已使用相同配置初始化。")
 
     def init_vad(self, vad_config: VADConfig) -> None:
         if vad_config.vad_model is None:
-            logger.info("VAD is disabled.")
+            logger.info("VAD 已禁用。")
             self.vad_engine = None
             return
 
         if not self.vad_engine or (self.character_config.vad_config != vad_config):
-            logger.info(f"Initializing VAD: {vad_config.vad_model}")
+            logger.info(f"初始化 VAD: {vad_config.vad_model}")
             self.vad_engine = VADFactory.get_vad_engine(
                 vad_config.vad_model,
                 **getattr(vad_config, vad_config.vad_model.lower()).model_dump(),
             )
-            # saving config should be done after successful initialization
+            # 成功初始化后保存配置
             self.character_config.vad_config = vad_config
         else:
-            logger.info("VAD already initialized with the same config.")
+            logger.info("VAD 已使用相同配置初始化。")
 
     async def init_agent(self, agent_config: AgentConfig, persona_prompt: str) -> None:
-        """Initialize or update the LLM engine based on agent configuration."""
-        logger.info(f"Initializing Agent: {agent_config.conversation_agent_choice}")
+        """根据代理配置初始化或更新 LLM 引擎。"""
+        logger.info(f"初始化代理: {agent_config.conversation_agent_choice}")
 
         if (
             self.agent_engine is not None
             and agent_config == self.character_config.agent_config
             and persona_prompt == self.character_config.persona_prompt
         ):
-            logger.debug("Agent already initialized with the same config.")
+            logger.debug("代理已使用相同配置初始化。")
             return
 
         system_prompt = await self.construct_system_prompt(persona_prompt)
 
-        # Pass avatar to agent factory
-        avatar = self.character_config.avatar or ""  # Get avatar from config
+        # 将头像传递给代理工厂
+        avatar = self.character_config.avatar or ""  # 从配置中获取头像
 
         try:
             self.agent_engine = AgentFactory.create_agent(
@@ -393,10 +393,10 @@ class ServiceContext:
                 mcp_prompt_string=self.mcp_prompt,
             )
 
-            logger.debug(f"Agent choice: {agent_config.conversation_agent_choice}")
-            logger.debug(f"System prompt: {system_prompt}")
+            logger.debug(f"代理选择: {agent_config.conversation_agent_choice}")
+            logger.debug(f"系统提示: {system_prompt}")
 
-            # Save the current configuration
+            # 保存当前配置
             self.character_config.agent_config = agent_config
             self.system_prompt = system_prompt
 
@@ -405,10 +405,10 @@ class ServiceContext:
             raise
 
     def init_translate(self, translator_config: TranslatorConfig) -> None:
-        """Initialize or update the translation engine based on the configuration."""
+        """根据配置初始化或更新翻译引擎。"""
 
         if not translator_config.translate_audio:
-            logger.debug("Translation is disabled.")
+            logger.debug("翻译已禁用。")
             return
 
         if (
@@ -417,7 +417,7 @@ class ServiceContext:
             != translator_config
         ):
             logger.info(
-                f"Initializing Translator: {translator_config.translate_provider}"
+                f"初始化翻译器: {translator_config.translate_provider}"
             )
             self.translate_engine = TranslateFactory.get_translator(
                 translator_config.translate_provider,
@@ -429,21 +429,21 @@ class ServiceContext:
                 translator_config
             )
         else:
-            logger.info("Translation already initialized with the same config.")
+            logger.info("翻译已使用相同配置初始化。")
 
     # ==== utils
 
     async def construct_system_prompt(self, persona_prompt: str) -> str:
         """
-        Append tool prompts to persona prompt.
+        将工具提示追加到角色提示中。
 
-        Parameters:
-        - persona_prompt (str): The persona prompt.
+        参数:
+        - persona_prompt (str): 角色提示。
 
-        Returns:
-        - str: The system prompt with all tool prompts appended.
+        返回:
+        - str: 包含所有工具提示的系统提示。
         """
-        logger.debug(f"constructing persona_prompt: '''{persona_prompt}'''")
+        logger.debug(f"构建角色提示: '''{persona_prompt}'''")
 
         for prompt_name, prompt_file in self.system_config.tool_prompts.items():
             if (
@@ -464,7 +464,7 @@ class ServiceContext:
 
             persona_prompt += prompt_content
 
-        logger.debug("\n === System Prompt ===")
+        logger.debug("\n === 系统提示 ===")
         logger.debug(persona_prompt)
 
         return persona_prompt
@@ -475,23 +475,23 @@ class ServiceContext:
         config_file_name: str,
     ) -> None:
         """
-        Handle the configuration switch request.
-        Change the configuration to a new config and notify the client.
+        处理配置切换请求。
+        将配置更改为新配置并通知客户端。
 
-        Parameters:
-        - websocket (WebSocket): The WebSocket connection.
-        - config_file_name (str): The name of the configuration file.
+        参数:
+        - websocket (WebSocket): WebSocket 连接。
+        - config_file_name (str): 配置文件的名称。
         """
         try:
             new_character_config_data = None
 
             if config_file_name == "conf.yaml":
-                # Load base config
+                # 加载基础配置
                 new_character_config_data = read_yaml("conf.yaml").get(
                     "character_config"
                 )
             else:
-                # Load alternative config and merge with base config
+                # 加载替代配置并与基础配置合并
                 characters_dir = self.system_config.config_alts_dir
                 file_path = os.path.normpath(
                     os.path.join(characters_dir, config_file_name)
@@ -512,13 +512,13 @@ class ServiceContext:
                     "character_config": new_character_config_data,
                 }
                 new_config = validate_config(new_config)
-                await self.load_from_config(new_config)  # Await the async load
-                logger.debug(f"New config: {self}")
+                await self.load_from_config(new_config)  # 等待异步加载
+                logger.debug(f"新配置: {self}")
                 logger.debug(
-                    f"New character config: {self.character_config.model_dump()}"
+                    f"新角色配置: {self.character_config.model_dump()}"
                 )
 
-                # Send responses to client
+                # 向客户端发送响应
                 await websocket.send_text(
                     json.dumps(
                         {
@@ -534,25 +534,25 @@ class ServiceContext:
                     json.dumps(
                         {
                             "type": "config-switched",
-                            "message": f"Switched to config: {config_file_name}",
+                            "message": f"已切换到配置: {config_file_name}",
                         }
                     )
                 )
 
-                logger.info(f"Configuration switched to {config_file_name}")
+                logger.info(f"配置已切换到 {config_file_name}")
             else:
                 raise ValueError(
-                    f"Failed to load configuration from {config_file_name}"
+                    f"无法从 {config_file_name} 加载配置"
                 )
 
         except Exception as e:
-            logger.error(f"Error switching configuration: {e}")
+            logger.error(f"切换配置时出错: {e}")
             logger.debug(self)
             await websocket.send_text(
                 json.dumps(
                     {
                         "type": "error",
-                        "message": f"Error switching configuration: {str(e)}",
+                        "message": f"切换配置时出错: {str(e)}",
                     }
                 )
             )
@@ -561,7 +561,7 @@ class ServiceContext:
 
 def deep_merge(dict1, dict2):
     """
-    Recursively merges dict2 into dict1, prioritizing values from dict2.
+    递归将 dict2 合并到 dict1 中，优先使用 dict2 的值。
     """
     result = dict1.copy()
     for key, value in dict2.items():

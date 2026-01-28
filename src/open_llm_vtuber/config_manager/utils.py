@@ -15,18 +15,17 @@ T = TypeVar("T", bound=BaseModel)
 
 def read_yaml(config_path: str) -> Dict[str, Any]:
     """
-    Read the specified YAML configuration file with environment variable substitution
-    and guess encoding. Return the configuration data as a dictionary.
+    读取指定的 YAML 配置文件，支持环境变量替换和编码猜测。将配置数据作为字典返回。
 
-    Args:
-        config_path: Path to the YAML configuration file.
+    参数:
+        config_path: YAML 配置文件的路径。
 
-    Returns:
-        Configuration data as a dictionary.
+    返回:
+        配置数据作为字典。
 
-    Raises:
-        FileNotFoundError: If the configuration file is not found.
-        IOError: If the configuration file cannot be read.
+    抛出:
+        FileNotFoundError: 如果配置文件不存在。
+        IOError: 如果无法读取配置文件。
     """
 
     if not os.path.exists(config_path):
@@ -54,16 +53,16 @@ def read_yaml(config_path: str) -> Dict[str, Any]:
 
 def validate_config(config_data: dict) -> Config:
     """
-    Validate configuration data against the Config model.
+    根据 Config 模型验证配置数据。
 
-    Args:
-        config_data: Configuration data to validate.
+    参数:
+        config_data: 要验证的配置数据。
 
-    Returns:
-        Validated Config object.
+    返回:
+        验证后的 Config 对象。
 
-    Raises:
-        ValidationError: If the configuration fails validation.
+    抛出:
+        ValidationError: 如果配置验证失败。
     """
     try:
         return Config(**config_data)
@@ -76,13 +75,13 @@ def validate_config(config_data: dict) -> Config:
 
 def load_text_file_with_guess_encoding(file_path: str) -> str | None:
     """
-    Load a text file with guessed encoding.
+    加载具有猜测编码的文本文件。
 
-    Parameters:
-    - file_path (str): The path to the text file.
+    参数:
+    - file_path (str): 文本文件的路径。
 
-    Returns:
-    - str: The content of the text file or None if an error occurred.
+    返回:
+    - str: 文本文件的内容，如果发生错误则返回 None。
     """
     encodings = ["utf-8", "utf-8-sig", "gbk", "gb2312", "ascii", "cp936"]
 
@@ -106,11 +105,11 @@ def load_text_file_with_guess_encoding(file_path: str) -> str | None:
 
 def save_config(config: BaseModel, config_path: Union[str, Path]):
     """
-    Saves a Pydantic model to a YAML configuration file.
+    将 Pydantic 模型保存到 YAML 配置文件。
 
-    Args:
-        config: The Pydantic model to save.
-        config_path: Path to the YAML configuration file.
+    参数:
+        config: 要保存的 Pydantic 模型。
+        config_path: YAML 配置文件的路径。
     """
     config_file = Path(config_path)
     config_data = config.model_dump(
@@ -126,16 +125,16 @@ def save_config(config: BaseModel, config_path: Union[str, Path]):
 
 def scan_config_alts_directory(config_alts_dir: str) -> list[dict]:
     """
-    Scan the config_alts directory and return a list of config information.
-    Each config info contains the filename and its display name from the config.
+    扫描 config_alts 目录并返回配置信息列表。
+    每个配置信息包含文件名及其从配置中获取的显示名称。
 
-    Parameters:
-    - config_alts_dir (str): The path to the config_alts directory.
+    参数:
+    - config_alts_dir (str): config_alts 目录的路径。
 
-    Returns:
-    - list[dict]: A list of dicts containing config info:
-        - filename: The actual config file name
-        - name: Display name from config, falls back to filename if not specified
+    返回:
+    - list[dict]: 包含配置信息的字典列表:
+        - filename: 实际的配置文件名
+        - name: 从配置中获取的显示名称，如果未指定则回退到文件名
     """
     config_files = []
 

@@ -11,7 +11,7 @@ from .translate_interface import TranslateInterface
 
 
 def sign(key, msg):
-    """Generate HMAC-SHA256 signature"""
+    """生成 HMAC-SHA256 签名"""
     return hmac.new(key, msg.encode("utf-8"), hashlib.sha256).digest()
 
 
@@ -38,14 +38,14 @@ class TencentTranslate(TranslateInterface):
         self.target_lang = target_lang
 
     def create_signature(self, date, service):
-        """Create signature"""
+        """创建签名"""
         secret_date = sign(("TC3" + self.secret_key).encode("utf-8"), date)
         secret_service = sign(secret_date, service)
         secret_signing = sign(secret_service, "tc3_request")
         return secret_signing
 
     def _prepare_headers(self, payload: str, timestamp: int, date: str) -> dict:
-        """Prepare request headers"""
+        """准备请求头"""
         ct = "application/json; charset=utf-8"
         canonical_uri = "/"
         canonical_querystring = ""
@@ -94,7 +94,7 @@ class TencentTranslate(TranslateInterface):
         return headers
 
     def translate(self, text: str) -> str:
-        """Translate text"""
+        """翻译文本"""
         timestamp = int(time.time())
         date = datetime.fromtimestamp(timestamp, timezone.utc).strftime("%Y-%m-%d")
 

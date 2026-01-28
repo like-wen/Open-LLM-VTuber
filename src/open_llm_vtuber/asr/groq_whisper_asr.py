@@ -18,10 +18,10 @@ class VoiceRecognition(ASRInterface):
         self.model = model
 
     def transcribe_np(self, audio: np.ndarray) -> str:
-        """Transcribe speech audio in numpy array format and return the transcription.
+        """转录 numpy 数组格式的语音音频并返回转录结果。
 
-        Args:
-            audio: The numpy array of the audio data to transcribe.
+        参数:
+            audio: 要转录的音频数据的 numpy 数组。
         """
 
         logger.info("Transcribing audio (GroqWhisperASR)...")

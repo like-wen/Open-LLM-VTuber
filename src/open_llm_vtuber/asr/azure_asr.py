@@ -45,13 +45,13 @@ class VoiceRecognition(ASRInterface):
 
     def _create_speech_recognizer(self, uses_default_microphone: bool = True):
         """
-        Create a speech recognizer instance with the specified configuration.
+        使用指定的配置创建语音识别器实例。
 
-        Args:
-            uses_default_microphone (bool): Whether to use default microphone
+        参数:
+            uses_default_microphone (bool): 是否使用默认麦克风
 
-        Returns:
-            SpeechRecognizer: Configured speech recognizer instance
+        返回:
+            SpeechRecognizer: 配置好的语音识别器实例
         """
         try:
             audio_config = speechsdk.AudioConfig(
@@ -66,16 +66,16 @@ class VoiceRecognition(ASRInterface):
 
     async def async_transcribe_np(self, audio: np.ndarray) -> str:
         """
-        Asynchronously transcribe audio data using Azure Speech Services with auto language detection.
+        使用 Azure Speech Services 异步转录音频数据，支持自动语言检测。
 
-        Args:
-            audio (np.ndarray): Audio data as numpy array
+        参数:
+            audio (np.ndarray): 音频数据，以 numpy 数组形式
 
-        Returns:
-            str: Transcribed text
+        返回:
+            str: 转录后的文本
 
-        Raises:
-            Exception: If transcription fails
+        引发:
+            Exception: 如果转录失败
         """
         temp_file = os.path.join(CACHE_DIR, f"{uuid.uuid4()}.wav")
 
@@ -126,16 +126,16 @@ class VoiceRecognition(ASRInterface):
 
     def transcribe_np(self, audio: np.ndarray) -> str:
         """
-        Synchronously transcribe audio data using Azure Speech Services.
+        使用 Azure Speech Services 同步转录音频数据。
 
-        Args:
-            audio (np.ndarray): Audio data as numpy array
+        参数:
+            audio (np.ndarray): 音频数据，以 numpy 数组形式
 
-        Returns:
-            str: Transcribed text
+        返回:
+            str: 转录后的文本
 
-        Raises:
-            Exception: If transcription fails
+        引发:
+            Exception: 如果转录失败
         """
         try:
             try:

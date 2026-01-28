@@ -5,7 +5,7 @@ from .i18n import I18nMixin, Description
 
 
 class StatelessLLMBaseConfig(I18nMixin):
-    """Base configuration for StatelessLLM."""
+    """无状态LLM的基础配置。"""
 
     # interrupt_method. If the provider supports inserting system prompt anywhere in the chat memory, use "system". Otherwise, use "user".
     interrupt_method: Literal["system", "user"] = Field(
@@ -23,7 +23,7 @@ class StatelessLLMBaseConfig(I18nMixin):
 
 
 class StatelessLLMWithTemplate(StatelessLLMBaseConfig):
-    """Configuration for OpenAI-compatible LLM providers."""
+    """带模板的无状态LLM配置。"""
 
     base_url: str = Field(..., alias="base_url")
     llm_api_key: str = Field(..., alias="llm_api_key")
@@ -56,7 +56,7 @@ class StatelessLLMWithTemplate(StatelessLLMBaseConfig):
 
 
 class OpenAICompatibleConfig(StatelessLLMBaseConfig):
-    """Configuration for OpenAI-compatible LLM providers."""
+    """OpenAI兼容的语言模型提供者配置。"""
 
     base_url: str = Field(..., alias="base_url")
     llm_api_key: str = Field(..., alias="llm_api_key")
@@ -91,7 +91,7 @@ class OpenAICompatibleConfig(StatelessLLMBaseConfig):
 
 
 class OllamaConfig(OpenAICompatibleConfig):
-    """Configuration for Ollama API."""
+    """Ollama API 配置。"""
 
     llm_api_key: str = Field("default_api_key", alias="llm_api_key")
     keep_alive: float = Field(-1, alias="keep_alive")
@@ -124,7 +124,7 @@ class OllamaConfig(OpenAICompatibleConfig):
 
 
 class LmStudioConfig(OpenAICompatibleConfig):
-    """Configuration for LM Studio."""
+    """LM Studio 配置。"""
 
     llm_api_key: str = Field("default_api_key", alias="llm_api_key")
     base_url: str = Field("http://localhost:1234/v1", alias="base_url")
@@ -134,7 +134,7 @@ class LmStudioConfig(OpenAICompatibleConfig):
 
 
 class OpenAIConfig(OpenAICompatibleConfig):
-    """Configuration for Official OpenAI API."""
+    """官方 OpenAI API 配置。"""
 
     base_url: str = Field("https://api.openai.com/v1", alias="base_url")
     interrupt_method: Literal["system", "user"] = Field(
@@ -143,7 +143,7 @@ class OpenAIConfig(OpenAICompatibleConfig):
 
 
 class GeminiConfig(OpenAICompatibleConfig):
-    """Configuration for Gemini API."""
+    """Gemini API 配置。"""
 
     base_url: str = Field(
         "https://generativelanguage.googleapis.com/v1beta/openai/", alias="base_url"
@@ -154,7 +154,7 @@ class GeminiConfig(OpenAICompatibleConfig):
 
 
 class MistralConfig(OpenAICompatibleConfig):
-    """Configuration for Mistral API."""
+    """Mistral API 配置。"""
 
     base_url: str = Field("https://api.mistral.ai/v1", alias="base_url")
     interrupt_method: Literal["system", "user"] = Field(
@@ -163,19 +163,19 @@ class MistralConfig(OpenAICompatibleConfig):
 
 
 class ZhipuConfig(OpenAICompatibleConfig):
-    """Configuration for Zhipu API."""
+    """Zhipu API 配置。"""
 
     base_url: str = Field("https://open.bigmodel.cn/api/paas/v4/", alias="base_url")
 
 
 class DeepseekConfig(OpenAICompatibleConfig):
-    """Configuration for Deepseek API."""
+    """Deepseek API 配置。"""
 
     base_url: str = Field("https://api.deepseek.com/v1", alias="base_url")
 
 
 class GroqConfig(OpenAICompatibleConfig):
-    """Configuration for Groq API."""
+    """Groq API 配置。"""
 
     base_url: str = Field("https://api.groq.com/openai/v1", alias="base_url")
     interrupt_method: Literal["system", "user"] = Field(
@@ -184,7 +184,7 @@ class GroqConfig(OpenAICompatibleConfig):
 
 
 class ClaudeConfig(StatelessLLMBaseConfig):
-    """Configuration for OpenAI Official API."""
+    """Claude API 配置。"""
 
     base_url: str = Field("https://api.anthropic.com", alias="base_url")
     llm_api_key: str = Field(..., alias="llm_api_key")
@@ -210,7 +210,7 @@ class ClaudeConfig(StatelessLLMBaseConfig):
 
 
 class LlamaCppConfig(StatelessLLMBaseConfig):
-    """Configuration for LlamaCpp."""
+    """LlamaCpp 配置。"""
 
     model_path: str = Field(..., alias="model_path")
     interrupt_method: Literal["system", "user"] = Field(
@@ -230,8 +230,8 @@ class LlamaCppConfig(StatelessLLMBaseConfig):
 
 
 class StatelessLLMConfigs(I18nMixin, BaseModel):
-    """Pool of LLM provider configurations.
-    This class contains configurations for different LLM providers."""
+    """语言模型提供者配置池。
+    此类包含不同语言模型提供者的配置。"""
 
     stateless_llm_with_template: StatelessLLMWithTemplate | None = Field(
         None, alias="stateless_llm_with_template"

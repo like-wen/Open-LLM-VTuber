@@ -5,42 +5,42 @@ from typing import Callable, Dict, Any
 
 class LivePlatformInterface(ABC):
     """
-    Abstract interface for live streaming platforms.
-    This interface defines the methods that any live platform implementation must provide.
-    It handles connecting to the VTuber server via proxy, sending messages from the live platform,
-    and receiving responses.
+    直播平台的抽象接口。
+    此接口定义了任何直播平台实现必须提供的方法。
+    它处理通过代理连接到 VTuber 服务器，发送来自直播平台的消息，
+    并接收响应。
     """
 
     @abstractmethod
     async def connect(self, proxy_url: str) -> bool:
         """
-        Connect to the VTuber server via proxy WebSocket.
+        通过代理 WebSocket 连接到 VTuber 服务器。
 
-        Args:
-            proxy_url: WebSocket URL for the proxy
+        参数:
+            proxy_url: 代理的 WebSocket URL
 
-        Returns:
-            bool: True if connection successful, False otherwise
+        返回:
+            bool: 如果连接成功则为 True，否则为 False
         """
         pass
 
     @abstractmethod
     async def disconnect(self) -> None:
         """
-        Disconnect from the proxy server.
+        断开与代理服务器的连接。
         """
         pass
 
     @abstractmethod
     async def send_message(self, text: str) -> bool:
         """
-        Send a message from the live platform to the VTuber.
+        从直播平台向 VTuber 发送消息。
 
-        Args:
-            text: Message text content
+        参数:
+            text: 消息文本内容
 
-        Returns:
-            bool: True if message was sent successfully, False otherwise
+        返回:
+            bool: 如果消息发送成功则为 True，否则为 False
         """
         pass
 
@@ -49,27 +49,27 @@ class LivePlatformInterface(ABC):
         self, handler: Callable[[Dict[str, Any]], None]
     ) -> None:
         """
-        Register a callback function to handle response messages from the VTuber.
+        注册一个回调函数来处理来自 VTuber 的响应消息。
 
-        Args:
-            handler: Callback function that takes a message dict as parameter
+        参数:
+            handler: 以消息字典作为参数的回调函数
         """
         pass
 
     @abstractmethod
     async def start_receiving(self) -> None:
         """
-        Start receiving messages from the proxy server.
-        This method should typically be run in a separate task.
+        开始从代理服务器接收消息。
+        此方法通常应在单独的任务中运行。
         """
         pass
 
     @abstractmethod
     async def run(self) -> None:
         """
-        Main entry point to run the live platform client.
-        This should handle the complete lifecycle including connection,
-        message receiving, and clean disconnection.
+        运行直播平台客户端的主要入口点。
+        这应该处理完整的生命周期，包括连接、
+        消息接收和干净断开连接。
         """
         pass
 
@@ -77,20 +77,20 @@ class LivePlatformInterface(ABC):
     @abstractmethod
     def is_connected(self) -> bool:
         """
-        Check if the client is currently connected to the proxy.
+        检查客户端当前是否连接到代理。
 
-        Returns:
-            bool: True if connected, False otherwise
+        返回:
+            bool: 如果已连接则为 True，否则为 False
         """
         pass
 
     @abstractmethod
     async def handle_incoming_messages(self, message: Dict[str, Any]) -> None:
         """
-        Process incoming messages from the VTuber server.
+        处理由 VTuber 服务器接收的消息。
 
-        Args:
-            message: The message received from the VTuber
+        参数:
+            message: 从 VTuber 接收的消息
         """
         pass
 

@@ -9,16 +9,16 @@ from .server_registry import ServerRegistry
 
 
 class ToolAdapter:
-    """Dynamically fetches tool information from enabled MCP servers and formats it."""
+    """动态从启用的 MCP 服务器获取工具信息并进行格式化。"""
 
     def __init__(self, server_registery: Optional[ServerRegistry] = None) -> None:
-        """Initialize with an ServerRegistry."""
+        """使用 ServerRegistry 初始化。"""
         self.server_registery = server_registery or ServerRegistry()
 
     async def get_server_and_tool_info(
         self, enabled_servers: List[str]
     ) -> Tuple[Dict[str, Dict[str, str]], Dict[str, FormattedTool]]:
-        """Fetch tool information from specified enabled MCP servers."""
+        """从指定的启用 MCP 服务器获取工具信息。"""
         servers_info: Dict[str, Dict[str, str]] = {}
         formatted_tools: Dict[str, FormattedTool] = {}
 
@@ -85,7 +85,7 @@ class ToolAdapter:
     def construct_mcp_prompt_string(
         self, servers_info: Dict[str, Dict[str, str]]
     ) -> str:
-        """Build a single prompt string describing enabled servers and their tools."""
+        """构建描述启用服务器及其工具的单个提示字符串。"""
         full_prompt_content = ""
         if not servers_info:
             logger.warning(
@@ -137,7 +137,7 @@ class ToolAdapter:
     def format_tools_for_api(
         self, formatted_tools_dict: Dict[str, FormattedTool]
     ) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
-        """Format tools to OpenAI and Claude function-calling compatible schemas."""
+        """将工具格式化为与 OpenAI 和 Claude 函数调用兼容的模式。"""
         openai_tools = []
         claude_tools = []
 
@@ -219,7 +219,7 @@ class ToolAdapter:
     async def get_tools(
         self, enabled_servers: List[str]
     ) -> Tuple[str, List[Dict[str, Any]], List[Dict[str, Any]]]:
-        """Run the dynamic fetching and formatting process."""
+        """运行动态获取和格式化过程。"""
         logger.info(
             f"MC: Running dynamic tool construction for servers: {enabled_servers}"
         )

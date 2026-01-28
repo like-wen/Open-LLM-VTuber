@@ -29,7 +29,7 @@ async def handle_conversation_trigger(
     current_conversation_tasks: Dict[str, Optional[asyncio.Task]],
     broadcast_to_group: Callable,
 ) -> None:
-    """Handle triggers that start a conversation"""
+    """处理启动对话的触发器"""
     metadata = None
 
     if msg_type == "ai-speak-signal":
@@ -151,7 +151,7 @@ async def handle_group_interrupt(
     client_contexts: Dict[str, ServiceContext],
     broadcast_to_group: Callable,
 ) -> None:
-    """Handles interruption for a group conversation"""
+    """处理群组对话的中断"""
     task = current_conversation_tasks.get(group_id)
     if not task or task.done():
         return
