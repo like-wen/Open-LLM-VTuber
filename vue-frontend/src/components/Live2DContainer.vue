@@ -1,54 +1,49 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useWsClient } from '@/stores/wsClient'
+import Live2DRenderer from './Live2DRenderer.vue'
 
-const canvasRef = ref(null)
-const modelLoaded = ref(false)
-const errorMessage = ref('')
+const modelInfo = ref(null)
+const wsClient = useWsClient()
 
-// 模拟Live2D模型加载
-const loadModel = async () => {
-  try {
-    // 这里会集成Live2D SDK来加载模型
-    console.log('Loading Live2D model...')
-    
-    // 模拟加载过程
-    setTimeout(() => {
-      modelLoaded.value = true
-      console.log('Live2D model loaded successfully')
-    }, 1000)
-  } catch (error) {
-    errorMessage.value = `Failed to load Live2D model: ${error.message}`
-    console.error('Error loading Live2D model:', error)
-  }
-}
+// 从WebSocket接收Live2D相关的消息
+wsClient.onMessage('set-model-and-conf', (data) => {
+  console.log('Received model info:', data)
+  modelInfo.value = data.model_info
+})
+
+wsClient.onMessage('live2d-update-expression', (data) => {
+  console.log('Updating Live2D expression:', data)
+  // 这里可以调用Live2DRenderer的方法来更新表情
+})
+
+wsClient.onMessage('live2d-play-motion', (data) => {
+  console.log('Playing Live2D motion:', data)
+  // 这里可以调用Live2DRenderer的方法来播放动作
+})
 
 onMounted(() => {
-  loadModel()
+  // 请求初始化配置
+  wsClient.sendMessage({ type: 'request-init-config' })
 })
 
 onUnmounted(() => {
-  // 清理资源
-  console.log('Cleaning up Live2D resources')
+  console.log('Cleaning up Live2D container')
 })
 </script>
 
 <template>
   <div class="live2d-container">
     <h2>Live2D Character</h2>
-    <div class="canvas-wrapper" v-if="!errorMessage">
-      <canvas 
-        ref="canvasRef" 
-        class="live2d-canvas"
-        :class="{ loaded: modelLoaded }"
-      >
-        Your browser does not support the canvas element.
-      </canvas>
-      <div v-if="!modelLoaded" class="loading-overlay">
-        <p>Loading character...</p>
-      </div>
+    <div class="live2d-wrapper" v-if="modelInfo">
+      <Live2DRenderer 
+        :model-info="modelInfo"
+        @model-loaded="(model) => console.log('Model loaded in renderer')"
+        @error="(error) => console.error('Live2D error:', error)"
+      />
     </div>
-    <div v-else class="error-message">
-      {{ errorMessage }}
+    <div v-else class="placeholder">
+      <p>Loading Live2D model...</p>
     </div>
   </div>
 </template>
@@ -56,51 +51,23 @@ onUnmounted(() => {
 <style scoped>
 .live2d-container {
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   text-align: center;
 }
 
-.canvas-wrapper {
-  position: relative;
+.live2d-wrapper {
   width: 100%;
-  height: 400px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-  background-color: #f8f8f8;
+  height: 500px;
 }
 
-.live2d-canvas {
+.placeholder {
   width: 100%;
-  height: 100%;
-  display: block;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.live2d-canvas.loaded {
-  opacity: 1;
-}
-
-.loading-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  height: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255, 255, 255, 0.8);
-  z-index: 10;
-}
-
-.error-message {
-  color: #e74c3c;
-  padding: 1rem;
-  text-align: center;
-  background-color: #fdeded;
-  border: 1px solid #f5c6cb;
-  border-radius: 4px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f8f8f8;
 }
 </style>

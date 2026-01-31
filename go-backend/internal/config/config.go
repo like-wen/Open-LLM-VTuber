@@ -45,13 +45,27 @@ type SystemConfig struct {
 }
 
 func LoadConfig() *Config {
+	// 设置配置文件
+	viper.SetConfigName("config")
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath(".")
+	viper.AddConfigPath("./configs")
+	viper.AddConfigPath("../configs") // 以防在子目录中运行
+
+	// 设置默认值
 	viper.SetDefault("host", "localhost")
 	viper.SetDefault("port", "8080")
 	viper.SetDefault("debug", false)
 	viper.SetDefault("system.max_connections", 1000)
 	viper.SetDefault("system.buffer_size", 1024)
 
-	// 可以从环境变量或配置文件加载
+	// 尝试读取配置文件（如果存在）
+	if err := viper.ReadInConfig(); err != nil {
+		fmt.Println("警告: 无法读取配置文件:", err)
+		fmt.Println("使用默认配置...")
+	}
+
+	// 从环境变量加载（环境变量优先级更高）
 	viper.AutomaticEnv()
 
 	var config Config

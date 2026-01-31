@@ -77,6 +77,8 @@ func (h *WebSocketHandler) handleMessage(conn *websocket.Conn, msg Message) {
 		h.processAudioData(msg.Data)
 	case "fetch-configs":
 		h.sendConfigs(conn)
+	case "request-init-config":
+		h.sendInitConfig(conn)
 	default:
 		log.Printf("未知消息类型: %s", msg.Type)
 	}
@@ -98,6 +100,50 @@ func (h *WebSocketHandler) processTextInput(conn *websocket.Conn, data interface
 	
 	h.sendToClient(conn, response)
 }
+
+// 发送初始化配置
+func (h *WebSocketHandler) sendInitConfig(conn *websocket.Conn) {
+	// 模拟发送初始化配置，包括模型信息
+	response := Message{
+		Type: "set-model-and-conf",
+		Data: map[string]interface{}{
+			"model_info": map[string]interface{}{
+				"name": "mao_pro",
+				"url": "/live2d-models/mao_pro/runtime/mao_pro.model3.json",
+				"kScale": 0.5,
+				"initialXshift": 0,
+				"initialYshift": 0,
+				"kXOffset": 1150,
+				"idleMotionGroupName": "Idle",
+				"emotionMap": map[string]int{
+					"neutral": 0,
+					"anger": 2,
+					"disgust": 2,
+					"fear": 1,
+					"joy": 3,
+					"smirk": 3,
+					"sadness": 1,
+					"surprise": 3,
+				},
+				"tapMotions": map[string]interface{}{
+					"HitAreaHead": map[string]int{
+						"": 1,
+					},
+					"HitAreaBody": map[string]int{
+						"": 1,
+					},
+				},
+			},
+			"conf_name": "default",
+			"conf_uid": "default-uid",
+			"client_uid": "client-uid-placeholder",
+		},
+	}
+	
+	h.sendToClient(conn, response)
+}
+
+
 
 func (h *WebSocketHandler) processAudioData(data interface{}) {
 	// 处理音频数据，调用ASR服务

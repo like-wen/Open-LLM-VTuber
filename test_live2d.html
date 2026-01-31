@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live2D Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        #live2d-canvas {
+            width: 600px;
+            height: 600px;
+            border: 2px solid #ccc;
+            background-color: white;
+            margin: 20px auto;
+        }
+        
+        .controls {
+            margin: 20px 0;
+        }
+        
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Live2D Model Test</h1>
+        <canvas id="live2d-canvas"></canvas>
+        <div class="controls">
+            <button onclick="loadModel('mao_pro')">Load Mao_Pro</button>
+            <button onclick="loadModel('shizuku')">Load Shizuku</button>
+            <br><br>
+            <button onclick="playExpression('joy')">Joy Expression</button>
+            <button onclick="playExpression('anger')">Anger Expression</button>
+            <button onclick="playExpression('surprise')">Surprise Expression</button>
+            <br><br>
+            <button onclick="playMotion('TapBody')">Tap Body Motion</button>
+            <button onclick="playMotion('TapHead')">Tap Head Motion</button>
+        </div>
+        <p>Status: <span id="status">Ready</span></p>
+    </div>
+
+    <!-- 引入Live2D库 -->
+    <script src="/frontend/libs/live2d.min.js"></script>
+    <script>
+        let currentModel = null;
+        const canvas = document.getElementById('live2d-canvas');
+        const ctx = canvas.getContext('2d');
+        const statusElement = document.getElementById('status');
+        
+        // 设置canvas大小
+        canvas.width = 600;
+        canvas.height = 600;
+        
+        // 模型配置
+        const modelConfigs = {
+            mao_pro: {
+                path: '/live2d-models/mao_pro/runtime/mao_pro.model3.json',
+                scale: 0.5,
+                x: 300,
+                y: 300
+            },
+            shizuku: {
+                path: '/live2d-models/shizuku/runtime/shizuku.model3.json',
+                scale: 0.5,
+                x: 300,
+                y: 300
+            }
+        };
+
+        async function loadModel(modelName) {
+            statusElement.textContent = `Loading ${modelName}...`;
+            
+            try {
+                // 注意：这里使用的是简化的演示，真实实现需要使用完整的Live2D SDK
+                console.log(`Attempting to load model: ${modelConfigs[modelName].path}`);
+                
+                // 模拟加载过程
+                setTimeout(() => {
+                    statusElement.textContent = `${modelName} loaded successfully!`;
+                    drawPlaceholderModel();
+                }, 1000);
+            } catch (error) {
+                console.error('Error loading model:', error);
+                statusElement.textContent = `Error loading ${modelName}: ${error.message}`;
+            }
+        }
+
+        function drawPlaceholderModel() {
+            // 清空画布
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制一个简单的占位符模型
+            ctx.fillStyle = '#3498db';
+            ctx.beginPath();
+            ctx.arc(300, 300, 100, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(270, 280, 15, 0, Math.PI * 2); // 左眼
+            ctx.arc(330, 280, 15, 0, Math.PI * 2); // 右眼
+            ctx.fill();
+            
+            ctx.fillStyle = 'black';
+            ctx.beginPath();
+            ctx.arc(270, 280, 7, 0, Math.PI * 2); // 左眼球
+            ctx.arc(330, 280, 7, 0, Math.PI * 2); // 右眼球
+            ctx.fill();
+            
+            ctx.beginPath(); // 嘴巴
+            ctx.arc(300, 330, 30, 0, Math.PI);
+            ctx.stroke();
+        }
+
+        function playExpression(expression) {
+            if (!currentModel) {
+                statusElement.textContent = 'Please load a model first!';
+                return;
+            }
+            statusElement.textContent = `Playing ${expression} expression...`;
+            console.log(`Playing expression: ${expression}`);
+        }
+
+        function playMotion(motion) {
+            if (!currentModel) {
+                statusElement.textContent = 'Please load a model first!';
+                return;
+            }
+            statusElement.textContent = `Playing ${motion} motion...`;
+            console.log(`Playing motion: ${motion}`);
+        }
+
+        // 初始化时加载默认模型
+        window.onload = function() {
+            drawPlaceholderModel();
+        };
+    </script>
+</body>
+</html>
